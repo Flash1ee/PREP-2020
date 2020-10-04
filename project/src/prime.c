@@ -1,4 +1,5 @@
 #include "prime.h"
+
 int isprime(int num) {
     if (num < 2) {
         return NOT_PRIME;

@@ -1,174 +1,124 @@
 # Подготовительная программа на С/С++
-## Подготовка
-Необходимо форкнуть репу, сделать её приватной и добавить следующих пользователей:
-> myjupyter The_Psina alexersh alexandr_289 n_shch Anton-Rampage Arugaf @a_muradyan phantasy UsatiyNyan P00mP00m aleksn7 nickeskov Rzhevsky mrGexogen vbabayan kirimedia
 
-с правами **Developer**.
+## Домашнее задание №1
+Вводное задание нашего курса, которое познакомит вас с нашей методикой приема ДЗ.
 
-[ssh_keys_1]: images/ssh_keys_1.png "SSH keys 1"
-[ssh_keys_2]: images/ssh_keys_2.png "SSH keys 2"
-[fork]: images/fork.png "Fork"
-[permissions]: images/permissions.png "Permissions"
-[members]: images/members.png "Members"
-[clone]: images/clone.png "Clone"
-[merge_request_1]: images/merge_request_1.png "Merge Request 1"
-[merge_request_2]: images/merge_request_2.png "Merge Request 2"
+В папках **_project/include_** и **_project/src_** лежат исходники тестовой программы, которая через командную строку принимает следующие аргументы:
+- **_номер кейса_** (целое число в диапазоне [1, 3]);
+- входные данные для кейса:
+  * для кейса 1 - **_строка_** (./main.out 1 'Hello world!');
+  * для кейса 2 - **_два целых числа_** (./main.out 2 7 9);
+  * для кейса 3 - **_целое число_** (./main.out 3 197).
 
-### Fork:
-![alt text][fork]
-### Permissions:
-![alt text][permissions]
-### Members:
-![alt text][members]
+Требуется:
+1. Провести статический анализ кода: найти при помощи **_линтеров_** ошибки в стиле и исправить их.
+2. Найти и исправить ошибку в кейсе №1.
+    * Чем проще - тем лучше.
+    * Для облегчения поиска ошибки можно собрать программу при помощи **_make_**'а и позапускать с различными параметрами.
+3. Реализовать функцию кейса №2 по ее прототипу.
+    * Функция возвращает результат возведения **_base_** в степень **_pow_**.
+4. Реализовать модуль для кейса №3 и добавить его в основную программу.
+    * Модуль должен содержать функцию, определяющую является ли число, поданное на вход, простым: если да - вернуть 1, иначе 0.
+    * Описание модуля и его реализация должны лежать в соответствующих .h и .c файлах.
+    * [Не забудьте добавить исходники в **_Makefile_**](#Как-добавить-исходные-коды-в-makefile).
 
-### Настройка доступа в репозиторий на GitLab
+**_Если вы нашли какие-либо неточности/ошибки или испытываете затруднения при решении - обращайтесь к преподавателям
+(общий чат, сообщения на портале, на почту или в issues GitLab'а)._**
 
-Для того, чтобы иметь возможность сохранять изменения кода на вашем компьютере на GitLab, нужно
-"сообщить" гитлабу каким образом идентифицировать ваш компьютер.
+Если задание выполнено полностью верно, то после пуша в свою ветку на странице CI/Pipelines GitLab'а вы увидите 4 успешно прошедших этапа:
+- тестирование стиля кода;
+- сборка;
+- тестирование собранного бинарника;
+- тестирование собранного бинарника на наличие утечек памяти.
 
-Для этого существует поняние ssh-ключей. Для генерации пары открытый/закрытый ssh-ключ исполните следующие команды.
+![CI.png](img/CI.png)
 
+## Проверь себя!
+Все команды, описанные ниже, выполняются из **_корневой_** директории проекта (один уровень с **_Makefile_**).
+
+### Как собрать и запустить программу?
 [Как использовать команды, подобные той, что ниже](#Использование-кодовых-вставок)
 ```bash
-$ mkdir -p ~/.ssh
-$ chmod 700 ~/.ssh
-$ ssh-keygen -t rsa
-Generating public/private rsa key pair.
-Enter file in which to save the key (/Users/p.bereznoy/.ssh/id_rsa):
-Enter passphrase (empty for no passphrase):
-Enter same passphrase again:
-Your identification has been saved in /tmp/test.
-Your public key has been saved in /tmp/test.pub.
-The key fingerprint is:
-SHA256:9Yf53peICFiHtsvlLTU+lnMidP9Vd7U7aWtSE9GWyIs p.bereznoy@msk-wifi-21fap7-p_berezhnoy-noname.mail.msk
-The keys randomart image is:
-+---[RSA 2048]----+
-|            . . o|
-|             o oo|
-|        . . . ..o|
-|       + o E + .o|
-|      + S   + ..=|
-|     . o o + o o*|
-|      . * * = +=+|
-|       o = X *.+=|
-|          + = =oo|
-+----[SHA256]-----+
+$ make clean && make
+$ ./main.out 1 'Hello world!'
 ```
 
-Если вы не уверены, что готовы потратить пару часов на разбирательство "почему оно не работает", **не меняйте
-путь к ключу**, который предлагает утилита (строка "Enter file in which to save the key"), просто нажмите Enter.
+Не собирается:
+- все ли ошибки, выявленные gcc, исправлены?
+- все ли исходники указаны в **_Makefile_**?
 
-Если вам не нужен пароль для ключа (большинству не нужно), тоже просто нажмите Enter.
+### Как запустить статический анализ кода?
+Статический анализ кода - это процесс выявления логических и стилистических ошибок в исходных файлах программ без их компиляции и исполнения.
+Данный анализ избавляет программиста от багов, которые могут возникнуть вследствие его невнимательности. Программы, выполняющие статический анализ кода, называются **_статическими анализаторами_** или в простонародье - **_линтерами_**.
 
-В результате у вас были сгенерированы 2 файла:
+#### Необходимые зависимости
+На вашей машине **_должны быть установлены_** утилита [cppcheck](http://cppcheck.sourceforge.net/) и [Python 2.7](https://www.python.org/download/releases/2.7/) (воспользуйтесь **_apt-get install_**).
 ```bash
-$ ls ~/.ssh
-id_rsa id_rsa.pub
+$ cppcheck --version
+Cppcheck 1.82
+$ python2.7 --version
+Python 2.7.13
 ```
 
-Необходимо скопировать содержимое файла **id__rsa.pub** на гитлаб:
+#### Запуск линтеров
 ```bash
-$ cat ~/.ssh/id_rsa.pub
-ssh-rsa
-AAAAB3NzaC1yc2EAAAADAQABAAABAQD9nu0UpP/5txdI9CkOkIj3N4A0wdQ8Skm1s6mISmPmq6efOLJH5JEJ3oEOWvFBZOGMzR0QfJ9UOWy02/+YEXAJ9hMKoenaKHovTXhL6i9T99bD9TDouWh9kR4XbDht2pcmEzRkvgKh+xSwqDt7IwShdQtBr93j9H/z5pL38mKOz98TLGEBXDJMOH0QGHk/FPRiVGQl6HxNOa7wGzYR1fMgWMK5qX6S/81dRMOWjgm3QvpUiNwk3POhkLcO5YOV+H3zxb65KzDXixScQBRBWGUqKzc2qoyoG84m7LirGHc5moH+q5Ieo+nC5l0NOd3sKqq5XL5L2ZmNoErM2WVQZKnz
-p.bereznoy@msk-wifi-21fap7-p_berezhnoy-noname.mail.msk
+$ ./linters/run.sh --local
+
+***** RUN cppcheck *****
+Checking project/src/main.c ...
+1/2 files checked 50% done
+Checking project/src/utils.c ...
+2/2 files checked 100% done
+[*]: (information) Unmatched suppression: missingIncludeSystem
+
+***** RUN cpplint.py *****
+Done processing project/include/utils.h
+Done processing project/src/main.c
+Done processing project/src/utils.c
+Total errors found: 0
+
+***** SUCCESS *****
 ```
 
-Далее необходимо скопировать ключ на гитлаб:
-
-![alt text][ssh_keys_1]
-![alt text][ssh_keys_2]
-
-### Клонирование репозитория
-
-Для того, чтобы получить копию своего репозитория на компьютер, сначала скопируйте его URL (Clone with SSH не потребует ввода имени пользователя и пароля GitLab, в отличие от Clone with HTTPS):
-
-![alt text][clone]
-
-Затем воспользуйтесь командой:
+### Как запустить тесты?
 ```bash
-$ git clone "URL"
+$ make clean && make
+$ ./btests/run.sh ./main.out
+............SUCCESS
 ```
 
-### Локальные настройки GIT'а
+#### Тест не пройден. Причина?
 
-Просим вас исполнить следующие команды для конфигурирования вашего локального гита.
-
-Настройки принадлежности ваших коммитов:
+##### Код возврата программы не совпадает с ожидаемым
 ```bash
-$ git config --global user.name "Your Name Surname"
-$ git config --global user.email "your@e.mail"
+$ ./btests/run.sh ./main.out 
+TEST ./btests/0.0.tst FAILED. INVALID EXIT STATUS 
+EXPECTED:
+255
+RECEIVED:
+0
 ```
+Мы видим, что тест ./btests/0.0.tst не прошёл.
 
-Следующая команда необходима для того, чтобы пушить на гитлаб только текущую ветку.
-Необходимо **ВСЕМ**.
+Ожидалось, что программа завершится с кодом 255, а был получен 0.
+
+##### Вывод программы не совпадает с ожидаемым
 ```bash
-$ git config --global push.default current
+$ ./btests/run.sh ./main.out 
+..TEST ./btests/1.0.tst FAILED 
+EXPECTED (2 symbols):
+12
+RECEIVED (1 symbols):
+8
 ```
+Мы видим, что тест ./btests/1.0.tst не прошёл.
 
-Некоторые цветовые настройки. Будет красиво:
-```bash
-$ git config --global color.branch true
-$ git config --global color.interactive true
-$ git config --global color.diff true
-$ git config --global color.grep true
-$ git config --global color.status true
-```
+В стандартном выводе программы ожидалось "12", а было получено "8".
 
-## Выполнение
-Каждое задание находится в отдельной ветке с именем **hw-_num_**, где _num_ - номер задания.
-Описание задания находится в каждой ветке в *README.md*: его нужно выполнить, закоммитить и отправить на сервер.
-На каждый пуш GitLab запустит CI, который: проверит стиль кода, соберет проект, прогонит различные тесты.
+#####  Что делать?
+Смотрим содержимое непрошедшего теста (**_файл .tst_**), узнаём с какими ключами (KEYS) была запущена программа, что было подано ей на вход (IN) и какой вывод (OUT) и код возврата (STATUS) ожидались.
 
-**Note: все линтеры, сборщики и тесты находятся в той же ветке, что и задание. Их можно и нужно запустить локально,
- перед отправкой на сервер**
-
-Перед тем как начать делать задание, вам необходимо создать новую ветку с любым удобным именем
-(например, **making-hw-_num_**, _num_ - номер задания) от ветки **hw-_num_**:
-```bash
-$ git checkout hw-1
-$ git push
-$ git checkout -b making-hw-1
-```
-
-После этого нужно делать домашнее задание в этой ветке.
-
-## Защита
-После успешного прогона CI вы можете отправить задание на проверку.
-Для этого нужно сделать **Merge Request** вашей ветки ( **making-hw-_num_** в примере)
-в ветку **hw-_num_** (_num_ - номер задания).
-В течении 10 минут робот назначит препода на ревью. Если этого не произошло - сообщите нам.
-
-**Note: Merge Request необходимо делать в свой форк!**
-
-На все замечания будут открыты дискуссии и выставлена предварительная оценка. Как будут запушены все всправления - пишите в комменты.
-
-**Note: выполненным и защищенным будет считаться задание со смёрдженным преподавателем MR'ом и закрытыми дискуссиями.**
-Если вы сами закроете дискуссии или сами вмержите код, оценка на портал не попадет. Ее проставляет все равно препод.
-
-### Merge Request:
-![alt text][merge_request_1]
-![alt text][merge_request_2]
-
-## Получение следующих дз
-
-Для того, чтобы новые дз появлялись в вашем форке, воспользуйтесь ручным зеркалированием.
-
-Добавьте преподавательский репозиторий в список удаленных репозиториев (делается один раз):
-```bash
-$ git remote add upstream "URL"
-```
-
-Для добавления всех изменений в локальный репозиторий:
-```bash
-$ git fetch --all
-```
-
-Для добавления ветки в ваш репозиторий:
-```bash
-$ git checkout hw-num
-$ git push origin
-```
+Пробуем повторить тест руками.
 
 ## Дополнения
 
@@ -188,3 +138,46 @@ test 123 somedir
 ```
 Здесь была выполнена команда **_ls_**, которая выдала в терминал текст **_test 123 somedir_**. Эти строки даны для
 ознакомления с примером вывода программ.
+
+### Как добавить исходные коды в Makefile
+Если вы добавляете в проект еще один файл исходных кодов, для того чтобы он успешно собирался, необходимо добавить его в
+файл **_Makefile_**.
+Напомним, что **_Makefile_** является составным конфигурационным файлом для утилиты [make](https://www.gnu.org/software/make/).
+
+Пример конфигурационного файла:
+```Makefile
+TARGET = main.out
+HDRS_DIR = project/include
+
+# XXX: Don't forget backslash at the end of any line except the last one
+SRCS = \
+       project/src/main.c \
+       project/src/utils.c
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET) $(CFLAGS) $(SRCS)
+
+clean:
+	rm -rf $(TARGET)
+```
+
+В данном примере, проект состоит из 2х файлов исходных кодов: **_project/src/main.c_** и **_project/src/utils.c_**.
+В случае, если вам необходимо добавить еще один файл в проект, необходимо добавить путь к файлу в переменную **_SRCS_**.
+
+Например, чтобы добавить файл **_project/src/some.c_**, отредактируйте **_Makefile_** следующим образом:
+```Makefile
+SRCS = \
+       project/src/main.c \
+       project/src/utils.c \
+       project/src/some.c
+```
+
+Обратите внимание, что после **_utils.c_** появился знак переноса строки (символ **_/_**) тогда как после
+**_some.c_** его нет. Знак переноса строки должен присутствовать во всех строках кроме последней.
+
+Обратите также внимание на то, что в списке исходных текстов указываются только файлы с расширением **_.c_**.
+Заголовочные файлы указывать в списке не нужно.

@@ -7,7 +7,7 @@ size_t custom_strlen(const char *str) {
 }
 
 double custom_pow(double base, int power) {
-    //double res = base;
+    // double res = base;
     int res = base;
     int count = power;
 

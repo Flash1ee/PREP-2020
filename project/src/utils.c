@@ -3,12 +3,26 @@
 #include "utils.h"
 
 size_t custom_strlen(const char *str) {
-    return sizeof(str);
+    return strlen(str);
 }
 
-// TODO(flashie) : Implement `power of` function
-/*
-int custom_pow(int base, int power) {
-    return 0;
+double custom_pow(double base, int power) {
+    //double res = base;
+    int res = base;
+    int count = power;
+
+    if (!power)
+        return 1;
+    /*
+    else if (power < 0)
+        count = power * -1;
+    */
+
+    for (int i = 1; i < count; i++)
+        res *= base;
+
+    /*if (power < 0)
+        return 1 / res;
+    */
+    return res;
 }
-*/

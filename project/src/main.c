@@ -2,28 +2,20 @@
 #include <stdio.h>
 
 #include "utils.h"
+#include "prime.h"
 
-#define ERR_ARGS_COUNT (-1)
-#define ERR_WRONG_FLG (-2)
+
+#define ERR_ARGS_COUNT -1
+#define ERR_WRONG_FLG -2
+#define ERR_INPUT_NUM -3
+
 
 #define TST_FOO_FIX 1
 #define TST_FOO_IMPL 2
 #define TST_MOD_IMPL 3
 
-/* NOTE(stitaevskiy):
- * We use `atoi` function just for simplification and code reducing.
- * This function doesn't report conversation errors.
- * For safety program we recommend using `strtol` and its analogs.
- * (See `man atoi` and `man strtol` for more info).
- *
- * const char str_num[] = "1234";
- * char* end = NULL;
- * int val = (int) strtol(str_num, &end, 0);
- * if (end != '\0') {
- *     //ERROR
- * }
- *
- * */
+#define BASE 10
+
 
 int main(int argc, const char **argv) {
     if (argc < 3) {
@@ -44,22 +36,26 @@ int main(int argc, const char **argv) {
         if (argc != 4) {
             return ERR_ARGS_COUNT;
         }
-        /* Comment to prevent `unused parameter` error
-            int base = atoi(data);
-            int pow =  atoi(argv[3]);
-            int res = custom_pow(base, pow);    // TODO: Implement me
+        char *check = NULL;
+        int base = (int) strtol(data, &check, BASE);
+        if (*check != '\0')
+            return ERR_INPUT_NUM;
+        int pow =  (int) strtol(argv[3], &check, BASE);
+        if (*check != '\0')
+            return ERR_INPUT_NUM;
 
-            printf("%i\n", res);
-            */
+        int res = custom_pow(base, pow);
+
+        printf("%d\n", res);
         break;
     }
     case TST_MOD_IMPL: {
-        // Comment for prevent `unused variable` error
-        // int num = atoi(data);
-
-        // TODO(flashie): Print to stdout `1` if `num` is prime number and `0` otherwise
-        // This function MUST be implemented in
-        // a separate C-module (not in `main` or `utils` module)
+        char *check = NULL;
+        int num = (int) strtol(data, &check, BASE);
+        if (*check != '\0')
+            return ERR_INPUT_NUM;
+        int res = isprime(num);
+        printf("%d\n", res);
         break;
     }
     default: {

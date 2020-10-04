@@ -3,8 +3,7 @@
 
 
 size_t custom_strlen(const char* str);
-// TODO(flashie): Implement `power of` function
-// int custom_pow(int base, int power);
+double custom_pow(double base, int power);
 
 #endif  // PROJECT_INCLUDE_UTILS_H_
 

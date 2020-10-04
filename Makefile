@@ -1,10 +1,9 @@
 TARGET = main.out
 HDRS_DIR = project/include
+SRCS_DIR = project/src
 
 # XXX: Don't forget backslash at the end of any line except the last one
-SRCS = \
-       project/src/main.c \
-       project/src/utils.c
+SRCS = $(wildcard $(SRCS_DIR)/*.c)
 
 .PHONY: all clean
 

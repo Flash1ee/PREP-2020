@@ -38,11 +38,13 @@ int main(int argc, const char **argv) {
         }
         char *check = NULL;
         int base = (int) strtol(data, &check, BASE);
-        if (*check != '\0')
+        if (*check != '\0') {
             return ERR_INPUT_NUM;
+        }
         int pow =  (int) strtol(argv[3], &check, BASE);
-        if (*check != '\0')
+        if (*check != '\0') {
             return ERR_INPUT_NUM;
+        }
 
         int res = custom_pow(base, pow);
 
@@ -52,8 +54,9 @@ int main(int argc, const char **argv) {
     case TST_MOD_IMPL: {
         char *check = NULL;
         int num = (int) strtol(data, &check, BASE);
-        if (*check != '\0')
+        if (*check != '\0') {
             return ERR_INPUT_NUM;
+        }
         int res = isprime(num);
         printf("%d\n", res);
         break;
@@ -62,6 +65,5 @@ int main(int argc, const char **argv) {
         return ERR_WRONG_FLG;
     }
     }
-
-    return 0;
+    return EXIT_SUCCESS;
 }

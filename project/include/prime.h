@@ -6,6 +6,4 @@
 
 int isprime(int num);
 
-
-
 #endif  // PROJECT_INCLUDE_PRIME_H_

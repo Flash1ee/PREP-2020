@@ -2,13 +2,25 @@
 
 #include "utils.h"
 
-size_t custom_strlen(const char* str) {
-    return sizeof(str);
+size_t custom_strlen(const char *str) {
+    size_t i = 0;
+    while (*str) {
+        i++;
+        str++;
+    }
+    return i;
 }
 
-// TODO: Implement `power of` function
-/*
 int custom_pow(int base, int power) {
-    return 0;
+    int res = base;
+    int count = power;
+
+    if (!power) {
+        return 1;
+    }
+    for (int i = 1; i < count; i++) {
+        res *= base;
+    }
+
+    return res;
 }
-*/

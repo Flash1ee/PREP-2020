@@ -2,6 +2,6 @@
 #define PROJECT_INCLUDE_UTILS_H_
 
 size_t custom_strlen(const char* str);
-double custom_pow(double base, int power);
+int custom_pow(int base, int power);
 
 #endif  // PROJECT_INCLUDE_UTILS_H_

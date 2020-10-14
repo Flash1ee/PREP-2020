@@ -14,8 +14,7 @@ int main(void) {
         }
         switch (choice) {
             case CLIENT: {
-                FILE* client_file = NULL;
-                client_file = fopen(CLIENT_FILE, "w");
+                FILE* client_file = fopen(CLIENT_FILE, "w");
                 if (!client_file) {
                     puts("Not access");
                 } else {
@@ -25,8 +24,7 @@ int main(void) {
                 break;
             }
             case TRANSACTION: {
-                FILE* transaction_file = NULL;
-                transaction_file = fopen(TRANSACTION_FILE, "w");
+                FILE* transaction_file = fopen(TRANSACTION_FILE, "w");
                 if (!transaction_file) {
                     puts("Not access");
                 } else {
@@ -36,13 +34,9 @@ int main(void) {
                 break;
             }
             case BLACKRECORD: {
-                FILE* client_file = NULL;
-                FILE* transaction_file = NULL;
-                FILE* blackrecord_file = NULL;
-
-                client_file = fopen(CLIENT_FILE, "r");
-                transaction_file = fopen(TRANSACTION_FILE, "r");
-                blackrecord_file = fopen(BLACKRECORD_FILE, "w");
+                FILE* client_file = fopen(CLIENT_FILE, "r");
+                FILE* transaction_file = fopen(TRANSACTION_FILE, "r");
+                FILE* blackrecord_file = fopen(BLACKRECORD_FILE, "w");
 
                 if (!client_file || !transaction_file || !blackrecord_file) {
                     if (client_file) {

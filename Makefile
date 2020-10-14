@@ -1,12 +1,13 @@
 TARGET = main.out
 HDRS_DIR = project/include
-
-SRCS = project/src/main.c
-
+SRCPATH:=./project/src/
+SRCS = $(wildcard $(SRCPATH)*.c)
+INCPATH = ./project/include/
+CFLAGS = -I $(INCPATH) -Wall -Wextra -Werror
 .PHONY: all clean
 
 all: $(SRCS)
-	$(CC) -Wall -Wextra -Werror -o $(TARGET) $(CFLAGS) $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(CFLAGS) $(SRCS)
 
 clean:
 	rm -rf $(TARGET)

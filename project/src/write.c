@@ -51,18 +51,12 @@ void write_transaction_file(FILE *transaction_file) {
     printf("%s\n%s\n",
            "1 Number account: ",
            "2 Client cash payments: ");
-    int rc = 0;
-    while ((rc = scanf("%d %lf", &transfer.Number, &transfer.cash_payments)) != -1) {
-            printf("%s\n%s\n",
-                   "1 Number account: ",
-                   "2 Client cash payments: ");
-            continue;
-        }
-
+    while ((scanf("%d %lf", &transfer.Number, &transfer.cash_payments)) != -1) {
         fprintf(transaction_file, "%-3d%-6.2f\n", transfer.Number, transfer.cash_payments);
         printf("%s\n%s\n",
                "1 Number account:",
                "2 Client cash payments: ");
+    }
 }
 void write_blackrecord_file(FILE *client_file, FILE *transaction_file, FILE *blackrecord_file) {
     Data client, transfer;

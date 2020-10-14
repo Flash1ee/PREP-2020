@@ -15,7 +15,7 @@ int main(void) {
         switch (choice) {
             case CLIENT: {
                 FILE* client_file = NULL;
-                client_file = fopen(CLIENT_FILE, "a+");
+                client_file = fopen(CLIENT_FILE, "w");
                 if (!client_file) {
                     puts("Not access");
                 } else {
@@ -26,7 +26,7 @@ int main(void) {
             }
             case TRANSACTION: {
                 FILE* transaction_file = NULL;
-                transaction_file = fopen(TRANSACTION_FILE, "a+");
+                transaction_file = fopen(TRANSACTION_FILE, "w");
                 if (!transaction_file) {
                     puts("Not access");
                 } else {

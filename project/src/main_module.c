@@ -2,8 +2,7 @@
 
 int compare_data(Data *one, Data *two)
 {
-    int rc;
-    rc = one->Number - two->Number;
+    int rc = one->Number - two->Number;
     rc = strcmp(one->Name, two->Name);
     rc = strcmp(one->Surname, two->Surname);
     rc = strcmp(one->addres, two->addres);

@@ -2,15 +2,19 @@
 
 int compare_data(Data *one, Data *two)
 {
-    int rc = one->Number - two->Number;
-    rc = strcmp(one->Name, two->Name);
-    rc = strcmp(one->Surname, two->Surname);
-    rc = strcmp(one->addres, two->addres);
-    rc = strcmp(one->TelNumber, two->TelNumber);
-    rc = one->cash_payments - two->cash_payments;
-    rc = one->indebtedness - two->indebtedness;
-    rc = one->credit_limit - two->credit_limit;
-    return rc;
+    if (one->Number - two->Number || one->cash_payments - two->cash_payments) {
+        return NOT_EQUAL;
+    }
+    if (one->indebtedness - two->indebtedness || one->credit_limit - two->credit_limit) {
+        return NOT_EQUAL;
+    }
+    if (strcmp(one->Name, two->Name) || strcmp(one->Surname, two->Surname)) {
+        return NOT_EQUAL;
+    }
+    if (strcmp(one->addres, two->addres) || strcmp(one->TelNumber, two->TelNumber)) {
+        return NOT_EQUAL;
+    }
+    return SUCCESS;
 }
 void test_write_to_file() {
 	const char *filename_client = client_file;

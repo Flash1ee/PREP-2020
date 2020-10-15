@@ -16,6 +16,8 @@
 #define client_file "record_test.dat"
 #define transaction_file "transaction_test.dat"
 
+#define NOT_EQUAL -1
+#define SUCCESS 0
 typedef struct {
         int Number;
         char Name[NAME + 1];

@@ -12,12 +12,11 @@ int main(void) {
         if (scanf("%d", &choice) != 1) {
             break;
         }
-        printf("%d choice\n", choice);
         switch (choice) {
             case CLIENT: {
                 FILE* client_file = fopen(CLIENT_FILE, "w");
                 if (!client_file) {
-                    puts("Not access");
+                    printf("Can't open file %s.\n", CLIENT_FILE);
                 } else {
                     write_client_file(client_file);
                     fclose(client_file);
@@ -27,7 +26,7 @@ int main(void) {
             case TRANSACTION: {
                 FILE* transaction_file = fopen(TRANSACTION_FILE, "w");
                 if (!transaction_file) {
-                    puts("Not access");
+                    printf("Can't open file %s.\n", TRANSACTION_FILE);
                 } else {
                     write_transaction_file(transaction_file);
                     fclose(transaction_file);
@@ -40,6 +39,15 @@ int main(void) {
                 FILE* blackrecord_file = fopen(BLACKRECORD_FILE, "w");
 
                 if (!client_file || !transaction_file || !blackrecord_file) {
+                    if (!client_file) {
+                        printf("Can't open file %s.\n", CLIENT_FILE);
+                    }
+                    if (!transaction_file) {
+                        printf("Can't open file %s.\n", TRANSACTION_FILE);
+                    }
+                    if (!blackrecord_file) {
+                        printf("Can't open file %s.\n", BLACKRECORD_FILE);
+                    }
                     if (client_file) {
                         fclose(client_file);
                     }
@@ -60,7 +68,7 @@ int main(void) {
                 }
             }
             default:
-                puts("error");
+                puts("Error mode : use only modes 0, 1, 2.");
         }
     }
     return EXIT_SUCCESS;

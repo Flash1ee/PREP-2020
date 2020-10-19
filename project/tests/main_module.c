@@ -18,7 +18,7 @@ int compare_data(Data *one, Data *two) {
 void test_write_to_file() {
     const char *filename_client = client_file;
 
-    Data expected_data;
+    Data expected_data = {};
     expected_data.number = 1;
     char *name_test = "Vasya";
     char *surname_test = "Pupkin";
@@ -38,7 +38,7 @@ void test_write_to_file() {
 
     write_to_file(filename_client, &expected_data);
 
-    Data got_data;
+    Data got_data = {};
     read_from_file(filename_client, &got_data);
 
     if (!compare_data(&expected_data, &got_data)) {

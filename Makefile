@@ -12,7 +12,7 @@ CFLAGS = -I $(INCPATH) -Wall -Wextra -Werror
 all: $(SRCS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(CFLAGS) $(SRCS)
 test: $(UNIT)
-	$(CC) $(CFLAGS) -o $(TEST) $(UNIT)
+	$(CC) $(CFLAGS) -o $(TEST) $(UNIT) $(SRCPATH)io.c
 
 
 clean:

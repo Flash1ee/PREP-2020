@@ -10,7 +10,7 @@ CFLAGS = -I $(INCPATH) -Wall -Wextra -Werror
 .PHONY: all clean test
 
 all: $(SRCS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(CFLAGS) $(filter-out $(UNIT),$(SRCS))
+	$(CC) $(CFLAGS) -o $(TARGET) $(CFLAGS) $(SRCS)
 test: $(UNIT)
 	$(CC) $(CFLAGS) -o $(TEST) $(UNIT)
 

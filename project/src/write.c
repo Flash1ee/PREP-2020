@@ -1,42 +1,15 @@
 #include "write.h"
+#include "io.h"
 
 void write_client_file(FILE *client_file) {
     Data client;
     memset(&client, 0, sizeof(client));
     while (TRUE) {
-        printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-               "1 Number account: ",
-               "2 Client name: ",
-               "3 Surname: ",
-               "4 Addres client: ",
-               "5 Client Telnum: ",
-               "6 Client indebtedness: ",
-               "7 Client credit limit: ",
-               "8 Client cash payments: ");
-        int rc = (scanf("%d"
-                        "%" LEN(NAME) "s"
-                        "%" LEN(SURNAME) "s"
-                        "%" LEN(ADDRES) "s"
-                        "%" LEN(TELNUM) "s"
-                        "%lf%lf%lf",
-                       &client.number,
-                       client.name,
-                       client.surname,
-                       client.addres,
-                       client.tel_number,
-                       &client.indebtedness, &client.credit_limit, &client.cash_payments));
-        if (rc == -1) {
+        client_info(stdout);
+        if (client_input(stdin, &client) == -1) {
             break;
         }
-        fprintf(client_file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-                client.number,
-                client.name,
-                client.surname,
-                client.addres,
-                client.tel_number,
-                client.indebtedness,
-                client.credit_limit,
-                client.cash_payments);
+        client_out(client_file, &client);
     }
 }
 void write_transaction_file(FILE *transaction_file) {
@@ -44,14 +17,13 @@ void write_transaction_file(FILE *transaction_file) {
     memset(&transfer, 0, sizeof(transfer));
 
     while (TRUE) {
-        printf("%s\n%s\n",
-            "1 Number account: ",
-            "2 Client cash payments: ");
-        int rc = scanf("%d %lf", &transfer.number, &transfer.cash_payments);
-        if (rc == -1) {
+        transaction_info(stdout);
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF) { }
+        if (transaction_input(stdin, &transfer) == -1) {
             break;
         }
-        fprintf(transaction_file, "%-3d%-6.2f\n", transfer.number, transfer.cash_payments);
+        transaction_out(transaction_file, &transfer);
     }
 }
 void write_blackrecord_file(FILE *client_file, FILE *transaction_file, FILE *blackrecord_file) {
@@ -59,32 +31,18 @@ void write_blackrecord_file(FILE *client_file, FILE *transaction_file, FILE *bla
     memset(&client, 0, sizeof(client));
     memset(&transfer, 0, sizeof(transfer));
     while (TRUE) {
-        int rc = fscanf(client_file,
-                      "%d"
-                      "%" LEN(NAME) "s"
-                      "%" LEN(SURNAME) "s"
-                      "%" LEN(ADDRES) "s"
-                      "%" LEN(TELNUM) "s"
-                      "%lf%lf%lf",
-                      &client.number, client.name, client.surname, client.addres,
-                      client.tel_number, &client.indebtedness, &client.credit_limit,
-                      &client.cash_payments);
-        if (rc == -1) {
+        if (client_input(client_file, &client) == -1) {
             return;
         }
         while (TRUE) {
-            rc = fscanf(transaction_file, "%d %lf", &transfer.number, &transfer.cash_payments);
-            if (rc == -1) {
+            if (transaction_input(transaction_file, &transfer) == -1) {
                 break;
             }
             if (client.number == transfer.number && transfer.cash_payments != 0) {
-                    client.credit_limit += transfer.cash_payments;
+                client.credit_limit += transfer.cash_payments;
             }
         }
-        fprintf(blackrecord_file, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-                client.number, client.name,
-                client.surname, client.addres, client.tel_number,
-                client.indebtedness, client.credit_limit, client.cash_payments);
+        blackrecord_out(blackrecord_file, &client);
         rewind(transaction_file);
     }
 }

@@ -14,8 +14,6 @@
 #define EXIT 4
 
 
-#define LEN_(X) #X
-#define LEN(X) LEN_(X)
 
 #define CLIENT_ARGS 8
 #define TRANSACTION_ARGS 2

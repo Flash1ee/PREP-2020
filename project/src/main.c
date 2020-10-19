@@ -12,6 +12,7 @@ int main(void) {
         if (scanf("%d", &choice) != 1) {
             break;
         }
+        printf("%d choice\n", choice);
         switch (choice) {
             case CLIENT: {
                 FILE* client_file = fopen(CLIENT_FILE, "w");

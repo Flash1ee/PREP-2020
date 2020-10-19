@@ -1,12 +1,17 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
+#include <stdlib.h>
 #include <stddef.h>
 
 
 typedef struct Matrix {
+    size_t rows;
+    size_t cols;
+    my_num_t **data;
 } Matrix;
 
+typedef double my_num_t;
 // Init/release operations
 Matrix* create_matrix_from_file(const char* path_file);
 Matrix* create_matrix(size_t rows, size_t cols);

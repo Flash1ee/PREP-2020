@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "utils.h"
+#include "types.h"
 
 void write_client_file(FILE * client_file);
 void write_transaction_file(FILE * transaction_file);

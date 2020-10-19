@@ -10,11 +10,11 @@ void read_from_file(const char *filename, Data *data) {
                     "%" LEN(ADDRES) "s"
                     "%" LEN(TELNUM) "s"
                     "%lf%lf%lf",
-                    &(data->Number), data->Name, data->Surname, data->addres,
-                    data->TelNumber, &(data->indebtedness), &(data->credit_limit),
+                    &(data->number), data->name, data->surname, data->addres,
+                    data->tel_number, &(data->indebtedness), &(data->credit_limit),
                     &(data->cash_payments));
     } else {
-        fscanf(src, "%d %lf", &(data->Number), &(data->cash_payments));
+        fscanf(src, "%d %lf", &(data->number), &(data->cash_payments));
     }
     fclose(src);
 }

@@ -1,16 +1,16 @@
 #include "main_module.h"
 
 int compare_data(Data *one, Data *two) {
-    if (one->Number - two->Number || one->cash_payments - two->cash_payments) {
+    if (one->number - two->number || one->cash_payments - two->cash_payments) {
         return NOT_EQUAL;
     }
     if (one->indebtedness - two->indebtedness || one->credit_limit - two->credit_limit) {
         return NOT_EQUAL;
     }
-    if (strcmp(one->Name, two->Name) || strcmp(one->Surname, two->Surname)) {
+    if (strcmp(one->name, two->name) || strcmp(one->surname, two->surname)) {
         return NOT_EQUAL;
     }
-    if (strcmp(one->addres, two->addres) || strcmp(one->TelNumber, two->TelNumber)) {
+    if (strcmp(one->addres, two->addres) || strcmp(one->tel_number, two->tel_number)) {
         return NOT_EQUAL;
     }
     return SUCCESS;
@@ -19,7 +19,7 @@ void test_write_to_file() {
     const char *filename_client = client_file;
 
     Data expected_data;
-    expected_data.Number = 1;
+    expected_data.number = 1;
     char *name_test = "Vasya";
     char *surname_test = "Pupkin";
     char *address_test = "Moscow";
@@ -28,10 +28,10 @@ void test_write_to_file() {
     double credit_limit_test = 1000.00;
     double cash_payments_test = 50.00;
 
-    strncpy(expected_data.Name, name_test, strlen(name_test));
-    strncpy(expected_data.Surname, surname_test, strlen(surname_test));
+    strncpy(expected_data.name, name_test, strlen(name_test));
+    strncpy(expected_data.surname, surname_test, strlen(surname_test));
     strncpy(expected_data.addres, address_test, strlen(address_test));
-    strncpy(expected_data.TelNumber, number_test, strlen(number_test));
+    strncpy(expected_data.tel_number, number_test, strlen(number_test));
     expected_data.indebtedness = indebtedness_test;
     expected_data.credit_limit = credit_limit_test;
     expected_data.cash_payments = cash_payments_test;

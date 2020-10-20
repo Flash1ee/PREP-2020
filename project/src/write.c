@@ -4,8 +4,9 @@
 void write_client_file(FILE *client_file) {
     Data client = {};
     while (TRUE) {
-        client_info(stdout);
-        if (client_input(stdin, &client) == -1) {
+        client_info();
+        int rc = client_input(stdin, &client);
+        if (rc == -1 || rc != CLIENT_ARGS) {
             break;
         }
         client_out(client_file, &client);
@@ -14,8 +15,9 @@ void write_client_file(FILE *client_file) {
 void write_transaction_file(FILE *transaction_file) {
     Data transfer = {};
     while (TRUE) {
-        transaction_info(stdout);
-        if (transaction_input(stdin, &transfer) == -1) {
+        transaction_info();
+        int rc = transaction_input(stdin, &transfer);
+        if (rc == -1 || rc != TRANSACTION_ARGS) {
             break;
         }
         transaction_out(transaction_file, &transfer);
@@ -25,11 +27,13 @@ void write_blackrecord_file(FILE *client_file, FILE *transaction_file, FILE *bla
     Data client = {};
     Data transfer = {};
     while (TRUE) {
-        if (client_input(client_file, &client) == -1) {
+        int rc = client_input(client_file, &client);
+        if (rc == -1 || rc != CLIENT_ARGS) {
             return;
         }
         while (TRUE) {
-            if (transaction_input(transaction_file, &transfer) == -1) {
+            rc = transaction_input(transaction_file, &transfer);
+            if (rc == -1 || rc != TRANSACTION_ARGS) {
                 break;
             }
             if (client.number == transfer.number && transfer.cash_payments != 0) {

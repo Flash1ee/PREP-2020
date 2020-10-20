@@ -6,7 +6,7 @@
 
 int main(void) {
     while (TRUE) {
-        printf("%s", "please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
+        printf("please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
 
         int choice = 0;
         if (scanf("%d", &choice) != 1) {

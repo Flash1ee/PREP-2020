@@ -7,9 +7,8 @@
 #define LEN_(X) #X
 #define LEN(X) LEN_(X)
 
-void client_info(FILE *stream);
-void client_info(FILE *stream);
-void transaction_info(FILE *stream);
+void client_info();
+void transaction_info();
 int client_input(FILE *stream, Data *client);
 int client_out(FILE *stream, Data *client);
 int transaction_input(FILE *stream, Data *transfer);

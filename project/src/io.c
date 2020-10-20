@@ -1,20 +1,18 @@
 #include "io.h"
 
-void client_info(FILE *stream) {
-    fprintf(stream, "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
-            "1 Number account: ",
-            "2 Client name: ",
-            "3 Surname: ",
-            "4 Addres client: ",
-            "5 Client Telnum: ",
-            "6 Client indebtedness: ",
-            "7 Client credit limit: ",
-            "8 Client cash payments: ");
+void client_info() {
+    printf("1 Number account: \n"
+           "2 Client name: \n"
+           "3 Surname: \n"
+           "4 Addres client: \n"
+           "5 Client Telnum: \n"
+           "6 Client indebtedness: \n"
+           "7 Client credit limit: \n"
+           "8 Client cash payments: \n");
 }
-void transaction_info(FILE *stream) {
-    fprintf(stream, "%s\n%s\n",
-            "1 Number account: ",
-            "2 Client cash payments: ");
+void transaction_info() {
+    printf("1 Number account: \n"
+           "2 Client cash payments: \n");
 }
 int client_input(FILE *stream, Data *client) {
     if (!stream) {
@@ -22,15 +20,11 @@ int client_input(FILE *stream, Data *client) {
     }
     int rc = fscanf(stream,
                     "%d"
-                    "%" LEN(NAME)
-                        "s"
-                        "%" LEN(SURNAME)
-                            "s"
-                            "%" LEN(ADDRES)
-                                "s"
-                                "%" LEN(TELNUM)
-                                    "s"
-                                    "%lf%lf%lf",
+                    "%" LEN(NAME)"s"
+                    "%" LEN(SURNAME)"s"
+                    "%" LEN(ADDRES)"s"
+                    "%" LEN(TELNUM)"s"
+                    "%lf%lf%lf",
                     &(client->number),
                     client->name,
                     client->surname,

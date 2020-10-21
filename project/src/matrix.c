@@ -1,5 +1,7 @@
 #include "matrix.h"
 
+#include "../tests/include/utils.h"
+
 // NOTE(stitaevskiy): Place your implementation here
 Matrix* create_matrix(size_t rows, size_t cols) {
     if (!rows || !cols || rows < 1 || cols < 1) {
@@ -273,13 +275,6 @@ void get_minor(const Matrix* src, Matrix* dst, size_t cur_col, size_t cur_row) {
         dst_rows++;
     }
 }
-// int det(const Matrix* matrix, double* val) {
-//     if (!matrix) {
-//         return ARG_ERR;
-//     }
-//     *val = *val;
-//     return 0;
-// }
 
 Matrix* adj(const Matrix* matrix) {
     if (!matrix || !matrix->data) {
@@ -288,16 +283,73 @@ Matrix* adj(const Matrix* matrix) {
     if (matrix->rows < 1 || matrix->cols < 1 || matrix->rows != matrix->cols) {
         return NULL;
     }
-    Matrix *matrix_adj = create_matrix(matrix->rows, matrix->cols);
-    if (!matrix_adj) {
+    Matrix* transponse_matrix = transp(matrix);
+    if (!transponse_matrix) {
         return NULL;
     }
-    return NULL;
+    Matrix* matrix_adj = create_matrix(matrix->rows, matrix->cols);
+    if (!matrix_adj) {
+        free_matrix(transponse_matrix);
+        return NULL;
+    }
+    if (matrix->rows == 1 && matrix->cols == 1) {
+        matrix_adj->data[0][0] = matrix->data[0][0];
+        free(transponse_matrix);
+        return matrix_adj;
+    }
+    for (size_t i = 0; i < matrix->rows; i++) {
+        for (size_t j = 0; j < matrix->cols; j++) {
+            Matrix* tmp = create_matrix(matrix->rows - 1, matrix->cols - 1);
+            if (!tmp) {
+                free_matrix(transponse_matrix);
+                free_matrix(matrix_adj);
+                return NULL;
+            }
+            get_minor(transponse_matrix, tmp, j, i);
+            my_num_t determinate = 0;
+            int rc = det(tmp, &determinate);
+            if (rc != EXIT_SUCCESS) {
+                free_matrix(transponse_matrix);
+                free_matrix(matrix_adj);
+                free_matrix(tmp);
+                return NULL;
+            }
+            matrix_adj->data[i][j] = determinate * pow(-1, i + j);
+            free_matrix(tmp);
+        }
+    }
+    free_matrix(transponse_matrix);
+
+    return matrix_adj;
 }
 
 Matrix* inv(const Matrix* matrix) {
-    if (!matrix) {
+    if (!matrix || matrix->cols != matrix->rows || matrix->rows < 1 || matrix->cols < 1) {
         return NULL;
     }
-    return NULL;
+    if (matrix->rows == 1) {
+        Matrix* inv = create_matrix(1, 1);
+        inv->data[0][0] = 1 / matrix->data[0][0];
+        return inv;
+    }
+    Matrix* adjective_matrix = adj(matrix);
+    if (!adjective_matrix) {
+        return NULL;
+    }
+
+    double determinate = 0;
+    int rc = det(matrix, &determinate);
+    if (rc != EXIT_SUCCESS) {
+        free_matrix(adjective_matrix);
+        return NULL;
+    }
+    determinate = 1 / determinate;
+    Matrix* inverse_matrix = mul_scalar(adjective_matrix, determinate);
+    if (!inverse_matrix) {
+        free_matrix(adjective_matrix);
+        return NULL;
+    }
+    free_matrix(adjective_matrix);
+
+    return inverse_matrix;
 }

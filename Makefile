@@ -4,11 +4,18 @@ TST_TARGET = tests.out
 # XXX: Don't forget backslash at the end of any line except the last one
 # Main
 HDRS = \
-	   project/include
+	   project/include \
+	   project/tests/include
+	   
+
 
 SRCS = \
 	   project/src/main.c \
-	   project/src/matrix.c
+	   project/src/matrix.c \
+	   project/tests/src/utils.c \
+	   project/src/units.c
+
+
 
 # Test
 TST_HDRS = \

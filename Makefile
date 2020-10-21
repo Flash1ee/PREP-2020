@@ -27,7 +27,7 @@ main: $(SRCS)
 	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(HDRS)) -o $(TARGET) $(CFLAGS) $(SRCS) -lm
 
 test: $(TST_SRCS)
-	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(TST_HDRS)) -o $(TST_TARGET) $(CFLAGS) $(TST_SRCS) -lm
+	$(CC) -Wall -Wextra -Werror -g $(addprefix -I,$(TST_HDRS)) -o $(TST_TARGET) $(CFLAGS) $(TST_SRCS) -lm
 
 clean:
 	rm -f $(TARGET) $(TST_TARGET)

@@ -1,8 +1,5 @@
 #include "matrix.h"
 
-#include "../tests/include/utils.h"
-
-// NOTE(stitaevskiy): Place your implementation here
 Matrix* create_matrix(size_t rows, size_t cols) {
     if (!rows || !cols || rows < 1 || cols < 1) {
         return NULL;
@@ -152,75 +149,75 @@ Matrix* transp(const Matrix* matrix) {
     }
     return res;
 }
-Matrix* sum(const Matrix* l, const Matrix* r) {
-    if (!l || !r) {
+Matrix* sum(const Matrix* lhs, const Matrix* rhs) {
+    if (!lhs || !rhs) {
         return NULL;
     }
-    if (!r->data || r->rows < 1 || r->cols < 1) {
+    if (!rhs->data || rhs->rows < 1 || rhs->cols < 1) {
         return NULL;
     }
-    if (!l->data || l->rows < 1 || l->cols < 1) {
+    if (!lhs->data || lhs->rows < 1 || lhs->cols < 1) {
         return NULL;
     }
-    if (l->rows != r->rows || l->cols != r->cols) {
+    if (lhs->rows != rhs->rows || lhs->cols != rhs->cols) {
         return NULL;
     }
-    Matrix* res = create_matrix(r->rows, r->cols);
+    Matrix* res = create_matrix(rhs->rows, rhs->cols);
     if (!res) {
         return NULL;
     }
     for (size_t i = 0; i < res->rows; i++) {
         for (size_t j = 0; j < res->cols; j++) {
-            res->data[i][j] = l->data[i][j] + r->data[i][j];
+            res->data[i][j] = lhs->data[i][j] + rhs->data[i][j];
         }
     }
     return res;
 }
-Matrix* sub(const Matrix* l, const Matrix* r) {
-    if (!l || !r) {
+Matrix* sub(const Matrix* lhs, const Matrix* rhs) {
+    if (!lhs || !rhs) {
         return NULL;
     }
-    if (!r->data || r->rows < 1 || r->cols < 1) {
+    if (!rhs->data || rhs->rows < 1 || rhs->cols < 1) {
         return NULL;
     }
-    if (!l->data || l->rows < 1 || l->cols < 1) {
+    if (!lhs->data || lhs->rows < 1 || lhs->cols < 1) {
         return NULL;
     }
-    if (l->rows != r->rows || l->cols != r->cols) {
+    if (lhs->rows != rhs->rows || lhs->cols != rhs->cols) {
         return NULL;
     }
-    Matrix* res = create_matrix(r->rows, r->cols);
+    Matrix* res = create_matrix(rhs->rows, rhs->cols);
     if (!res) {
         return NULL;
     }
     for (size_t i = 0; i < res->rows; i++) {
         for (size_t j = 0; j < res->cols; j++) {
-            res->data[i][j] = l->data[i][j] - r->data[i][j];
+            res->data[i][j] = lhs->data[i][j] - rhs->data[i][j];
         }
     }
     return res;
 }
-Matrix* mul(const Matrix* l, const Matrix* r) {
-    if (!l || !r) {
+Matrix* mul(const Matrix* lhs, const Matrix* rhs) {
+    if (!lhs || !rhs) {
         return NULL;
     }
-    if (!r->data || r->rows < 1 || r->cols < 1) {
+    if (!rhs->data || rhs->rows < 1 || rhs->cols < 1) {
         return NULL;
     }
-    if (!l->data || l->rows < 1 || l->cols < 1) {
+    if (!lhs->data || lhs->rows < 1 || lhs->cols < 1) {
         return NULL;
     }
-    if (l->cols != r->rows) {
+    if (lhs->cols != rhs->rows) {
         return NULL;
     }
-    Matrix* res = create_matrix(l->rows, r->cols);
+    Matrix* res = create_matrix(lhs->rows, rhs->cols);
     if (!res) {
         return NULL;
     }
-    for (size_t i = 0; i < l->rows; i++) {
-        for (size_t j = 0; j < r->cols; j++) {
-            for (size_t k = 0; k < l->cols; k++) {
-                res->data[i][j] += l->data[i][k] * r->data[k][j];
+    for (size_t i = 0; i < lhs->rows; i++) {
+        for (size_t j = 0; j < rhs->cols; j++) {
+            for (size_t k = 0; k < lhs->cols; k++) {
+                res->data[i][j] += lhs->data[i][k] * rhs->data[k][j];
             }
         }
     }

@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_MAIN_MODULE_H_
-#define PROJECT_INCLUDE_MAIN_MODULE_H_
+#ifndef PROJECT_INCLUDE_CHECK_CORRECT_H_
+#define PROJECT_INCLUDE_CHECK_CORRECT_H_
 
 #include <stdio.h>
 #include <string.h>
@@ -22,4 +22,4 @@ void test_write_to_file();
 int compare_data(Data *one, Data *two);
 
 
-#endif  //  PROJECT_INCLUDE_MAIN_MODULE_H_
+#endif  //  PROJECT_INCLUDE_CHECK_CORRECT_H_

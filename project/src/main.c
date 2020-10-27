@@ -10,62 +10,40 @@ int main(void) {
 
         int choice = 0;
         if (scanf("%d", &choice) != 1) {
-            break;
+            return READ_ERR;
         }
+        int rc = 0;
         switch (choice) {
             case CLIENT: {
-                FILE* client_file = fopen(CLIENT_FILE, "w");
-                if (!client_file) {
-                    printf("Can't open file %s.\n", CLIENT_FILE);
-                } else {
-                    write_client_file(client_file);
-                    fclose(client_file);
+                rc = write_client_file();
+                if (rc == OPEN_ERR) {
+                    puts("Can't open file record.dat.");
+                    return rc;
                 }
-                break;
+                if (rc == READ_ERR) {
+                    puts("Error reading the file");
+                    return rc;
+                }
+                return EXIT_SUCCESS;
             }
             case TRANSACTION: {
-                FILE* transaction_file = fopen(TRANSACTION_FILE, "w");
-                if (!transaction_file) {
-                    printf("Can't open file %s.\n", TRANSACTION_FILE);
-                } else {
-                    write_transaction_file(transaction_file);
-                    fclose(transaction_file);
+                rc = write_transaction_file();
+                if (rc == OPEN_ERR) {
+                    puts("Can't open file transaction.dat.");
+                    return rc;
                 }
-                break;
+                if (rc == READ_ERR) {
+                    puts("Error reading the file");
+                    return rc;
+                }
+                return EXIT_SUCCESS;
             }
             case BLACKRECORD: {
-                FILE* client_file = fopen(CLIENT_FILE, "r");
-                FILE* transaction_file = fopen(TRANSACTION_FILE, "r");
-                FILE* blackrecord_file = fopen(BLACKRECORD_FILE, "w");
-
-                if (!client_file || !transaction_file || !blackrecord_file) {
-                    if (!client_file) {
-                        printf("Can't open file %s.\n", CLIENT_FILE);
-                    }
-                    if (!transaction_file) {
-                        printf("Can't open file %s.\n", TRANSACTION_FILE);
-                    }
-                    if (!blackrecord_file) {
-                        printf("Can't open file %s.\n", BLACKRECORD_FILE);
-                    }
-                    if (client_file) {
-                        fclose(client_file);
-                    }
-                    if (transaction_file) {
-                        fclose(transaction_file);
-                    }
-                    if (blackrecord_file) {
-                        fclose(blackrecord_file);
-                    }
-                    puts("Not access");
-                    break;
-                } else {
-                    write_blackrecord_file(client_file, transaction_file, blackrecord_file);
-                    fclose(client_file);
-                    fclose(transaction_file);
-                    fclose(blackrecord_file);
-                    break;
+                rc = write_blackrecord_file();
+                if (rc == READ_ERR) {
+                    puts("Error reading the file");
                 }
+                return rc;
             }
             default:
                 puts("Error mode : use only modes 0, 1, 2.");

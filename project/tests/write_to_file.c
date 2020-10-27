@@ -1,4 +1,4 @@
-#include "main_module.h"
+#include "check_correct.h"
 
 void write_to_file(const char *filename, Data *data) {
     FILE* src = fopen(filename, "w");

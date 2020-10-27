@@ -16,7 +16,7 @@ void transaction_info() {
 }
 int client_input(FILE *stream, Data *client) {
     if (!stream) {
-        return -1;
+        return ARG_ERR;
     }
     int rc = fscanf(stream,
                     "%d"
@@ -33,9 +33,9 @@ int client_input(FILE *stream, Data *client) {
                     &(client->indebtedness), &(client->credit_limit), &(client->cash_payments));
     return rc;
 }
-int client_out(FILE *stream, Data *client) {
+int client_out(FILE *stream, const Data *client) {
     if (!stream) {
-        return -1;
+        return ARG_ERR;
     }
     int rc = fprintf(stream, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n", client->number,
                      client->name,
@@ -47,19 +47,19 @@ int client_out(FILE *stream, Data *client) {
 }
 int transaction_input(FILE *stream, Data *transfer) {
     if (!stream) {
-        return -1;
+        return ARG_ERR;
     }
     int rc = fscanf(stream, "%d %lf", &(transfer->number), &(transfer->cash_payments));
     return rc;
 }
-int transaction_out(FILE *stream, Data *transfer) {
+int transaction_out(FILE *stream, const Data *transfer) {
     if (!stream) {
-        return -1;
+        return ARG_ERR;
     }
     int rc = fprintf(stream, "%-3d%-6.2f\n", transfer->number, transfer->cash_payments);
     return rc;
 }
-int blackrecord_out(FILE *stream, Data *client) {
+int blackrecord_out(FILE *stream, const Data *client) {
     if (!stream) {
         return -1;
     }

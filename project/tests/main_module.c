@@ -1,4 +1,4 @@
-#include "main_module.h"
+#include "check_correct.h"
 
 int compare_data(Data *one, Data *two) {
     if (one->number - two->number || one->cash_payments - two->cash_payments) {

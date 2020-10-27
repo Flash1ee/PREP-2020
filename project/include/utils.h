@@ -3,10 +3,6 @@
 
 #include <stdlib.h>
 
-#define BLACKRECORD_FILE "blackrecord.dat"
-#define CLIENT_FILE "record.dat"
-#define TRANSACTION_FILE "transaction.dat"
-
 #define TRUE 1
 #define CLIENT 1
 #define TRANSACTION 2
@@ -15,6 +11,10 @@
 
 
 
+#define READ_ERR -3
+#define ARG_ERR -2
+
+#define OPEN_ERR -3
 #define CLIENT_ARGS 8
 #define TRANSACTION_ARGS 2
 

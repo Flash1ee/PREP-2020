@@ -6,9 +6,9 @@
 #include "utils.h"
 #include "types.h"
 
-void write_client_file(FILE * client_file);
-void write_transaction_file(FILE * transaction_file);
-void write_blackrecord_file(FILE * client_file, FILE * transaction_file, FILE * blackrecord_file);
+int write_client_file();
+int write_transaction_file();
+int write_blackrecord_file();
 
 
 #endif  //  PROJECT_INCLUDE_WRITE_H_

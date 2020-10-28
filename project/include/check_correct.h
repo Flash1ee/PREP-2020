@@ -5,20 +5,20 @@
 #include <string.h>
 #include "types.h"
 #include "io.h"
+#include "write.h"
 
-#define LEN_(X) #X
-#define LEN(X) LEN_(X)
-
-
-#define client_file "record_test.dat"
-#define transaction_file "transaction_test.dat"
+#define CLIENT_FILE "record.dat"
+#define TRANSACTION_FILE "transaction.dat"
+#define BLACKRECORD_FILE "blackrecord.dat"
 
 #define NOT_EQUAL -1
 #define SUCCESS 0
 
-void write_to_file(const char *filename, Data *data);
-void read_from_file(const char *filename, Data *data);
-void test_write_to_file();
+int test_read_write_client();
+int test_read_write_transaction();
+int test_read_write_blackrecord();
+int test_calculate_blackrecord();
+int test_multy_calculate_blackrecord();
 int compare_data(Data *one, Data *two);
 
 

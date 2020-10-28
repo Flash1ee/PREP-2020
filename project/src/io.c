@@ -59,6 +59,25 @@ int transaction_out(FILE *stream, const Data *transfer) {
     int rc = fprintf(stream, "%-3d%-6.2f\n", transfer->number, transfer->cash_payments);
     return rc;
 }
+int blackrecord_input(FILE *stream, Data *client) {
+    if (!stream) {
+        return ARG_ERR;
+    }
+    int rc = fscanf(stream,
+                    "%d"
+                    "%" LEN(NAME)"s"
+                    "%" LEN(SURNAME)"s"
+                    "%" LEN(ADDRES)"s"
+                    "%" LEN(TELNUM)"s"
+                    "%lf%lf%lf",
+                    &(client->number),
+                    client->name,
+                    client->surname,
+                    client->addres,
+                    client->tel_number,
+                    &(client->indebtedness), &(client->credit_limit), &(client->cash_payments));
+    return rc;
+}
 int blackrecord_out(FILE *stream, const Data *client) {
     if (!stream) {
         return -1;

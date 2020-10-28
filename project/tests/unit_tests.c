@@ -1,6 +1,6 @@
 #include "check_correct.h"
 
-int compare_data(Data *one, Data *two) {
+int compare_data(const Data *one, const Data *two) {
     if (one->number - two->number || one->cash_payments - two->cash_payments) {
         return NOT_EQUAL;
     }
@@ -16,8 +16,8 @@ int compare_data(Data *one, Data *two) {
     return SUCCESS;
 }
 int test_read_write_client() {
-    Data client_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
-    Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data client_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
     Data got_data = {};
 
     FILE *client_data = fopen(CLIENT_FILE, "w");
@@ -44,8 +44,8 @@ int test_read_write_client() {
     }
 }
 int test_read_write_transaction() {
-    Data transaction_test = {.number = 1, .cash_payments = 200};
-    Data expect = {.number = 1, .cash_payments = 200};
+    const Data transaction_test = {.number = 1, .cash_payments = 200};
+    const Data expect = {.number = 1, .cash_payments = 200};
     Data got_data = {};
 
     FILE *transaction_file = fopen(TRANSACTION_FILE, "w");
@@ -72,8 +72,8 @@ int test_read_write_transaction() {
     }
 }
 int test_read_write_blackrecord() {
-    Data blackrecord_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
-    Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data blackrecord_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
     Data got_data = {};
 
     FILE *blackrecord_file = fopen(BLACKRECORD_FILE, "w");
@@ -82,7 +82,6 @@ int test_read_write_blackrecord() {
     }
     blackrecord_out(blackrecord_file, &blackrecord_test);
     fclose(blackrecord_file);
-
 
     blackrecord_file = fopen(BLACKRECORD_FILE, "r");
     if (!blackrecord_file) {
@@ -101,10 +100,10 @@ int test_read_write_blackrecord() {
     }
 }
 int test_calculate_blackrecord() {
-    Data client_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
-    Data transaction_data = {.number = 1, .cash_payments = 15};
+    const Data client_test = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data transaction_data = {.number = 1, .cash_payments = 15};
 
-    Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1015.00, 50.00};
+    const Data expect = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1015.00, 50.00};
     Data got_data = {};
 
     FILE *client_data = fopen(CLIENT_FILE, "w");
@@ -139,13 +138,13 @@ int test_calculate_blackrecord() {
     }
 }
 int test_multy_calculate_blackrecord() {
-    Data client_test_frst = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
-    Data client_test_second = {2, "Volodya", "Smirnov", "Samara", "664466", 100.00, 500.00, 10.00};
-    Data transaction_one = {.number = 2, .cash_payments = 10};
-    Data transaction_two = {.number = 1, .cash_payments = 200};
+    const Data client_test_frst = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1000.00, 50.00};
+    const Data client_test_second = {2, "Volodya", "Smirnov", "Samara", "664466", 100.00, 500.00, 10.00};
+    const Data transaction_one = {.number = 2, .cash_payments = 10};
+    const Data transaction_two = {.number = 1, .cash_payments = 200};
 
-    Data expect_one = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1200.00, 50.00};
-    Data expect_two = {2, "Volodya", "Smirnov", "Samara", "664466", 100.00, 510.00, 10.00};
+    const Data expect_one = {1, "Vasya", "Pupkin", "Moscow", "88005553535", 200.00, 1200.00, 50.00};
+    const Data expect_two = {2, "Volodya", "Smirnov", "Samara", "664466", 100.00, 510.00, 10.00};
     Data got_data_one = {};
     Data got_data_two = {};
 

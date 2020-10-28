@@ -9,16 +9,11 @@
 #define BLACKRECORD 3
 #define EXIT 4
 
-
-
-#define READ_ERR -3
-#define ARG_ERR -2
-
-#define OPEN_ERR -3
 #define CLIENT_ARGS 8
 #define TRANSACTION_ARGS 2
 
-
-
+#define READ_ERR -3
+#define ARG_ERR -2
+#define OPEN_ERR -3
 
 #endif  //  PROJECT_INCLUDE_UTILS_H_

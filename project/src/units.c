@@ -78,7 +78,7 @@ int test_get_set_elem() {
     size_t col_check = 3;
     size_t row_check = 2;
 
-    my_num_t value = 2020.;
+    matrix_t value = 2020.;
 
     Matrix *matrix = create_matrix(rows, cols);
     if (!matrix) {
@@ -87,7 +87,7 @@ int test_get_set_elem() {
     }
     set_elem(matrix, row_check, col_check, value);
 
-    my_num_t get_value = -1;
+    matrix_t get_value = -1;
     if (!get_elem(matrix, row_check, col_check, &get_value) && get_value == value) {
         puts("GET_SET_ELEM -----SUCCESS---");
         free_matrix(matrix);

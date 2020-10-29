@@ -11,17 +11,16 @@
 #define NOT_SQUARE -3
 #define ALLOCATION_ERR -4
 
-#define ScMyNum "%lf"
-#define PrMyNum "%lf"
+#define ScMyMatrix "%lf"
+#define PrMyMatrix "%lf"
 
-typedef double my_num_t;
+typedef double matrix_t;
 typedef struct Matrix {
     size_t rows;
     size_t cols;
-    my_num_t** data;
+    matrix_t** data;
 } Matrix;
 
-void get_minor(const Matrix* src, Matrix* dst, size_t cur_col, size_t cur_row);
 
 // Init/release operations
 Matrix* create_matrix_from_file(const char* path_file);

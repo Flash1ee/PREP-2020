@@ -94,7 +94,7 @@ int get_elem(const Matrix* matrix, size_t row, size_t col, double* val) {
     if (!matrix->data || matrix->rows < 1 || matrix->cols < 1) {
         return DATA_ERR;
     }
-    if (row > matrix->rows - 1 || col > matrix->cols - 1) {
+    if (row >= matrix->rows || col >= matrix->cols) {
         return ARG_ERR;
     }
     *val = matrix->data[row][col];
@@ -107,7 +107,7 @@ int set_elem(Matrix* matrix, size_t row, size_t col, double val) {
     if (!matrix->data || matrix->rows < 1 || matrix->cols < 1) {
         return DATA_ERR;
     }
-    if (row > matrix->rows - 1 || col > matrix->cols - 1) {
+    if (row >= matrix->rows || col >= matrix->cols) {
         return ARG_ERR;
     }
     matrix->data[row][col] = val;

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <matrix.h>
 
-#include "../tests/include/utils.h"
+#include "utils.h"
 #include "units.h"
 
 #define matrix_test "matrix_test.txt"

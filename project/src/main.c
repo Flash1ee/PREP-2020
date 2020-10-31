@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#include "../inc/parce.h"
+#include "parce.h"
 
 
 int main(int argc, const char **argv) {
@@ -30,16 +30,15 @@ int main(int argc, const char **argv) {
     if (ptr_to_data == MAP_FAILED) {
         return -1;
     }
-    
     char *tmp = ptr_to_data;
+
     letter_t *letter = parse_header(tmp);
     if (!letter) {
         puts("ERROR PARSE");
     }
+
     letter_print(letter);
     free_letter(letter);
-
-
 
     close(file);
 

@@ -30,6 +30,7 @@ int main(int argc, const char **argv) {
     if (ptr_to_data == MAP_FAILED) {
         return -1;
     }
+    
     char *tmp = ptr_to_data;
 
     letter_t *letter = parse_header(tmp);

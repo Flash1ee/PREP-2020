@@ -40,7 +40,7 @@ int parse_str(char *str, char *field, char **dst) {
     if (!end) {
         end = strchr(data, '\n');
     }
-    while (1) {
+    while (true) {
         if (*end == '\n' && isspace(*(end + 1))) {
             end = strchr(end + 1, '\n');
 
@@ -102,7 +102,7 @@ void free_letter(letter_t *src) {
     free(src);
 }
 int get_content_type(char *str, size_t *value) {
-    char content_type[255];
+    char content_type[BUF_LEN];
 
     char *content_header = search_field(str, CONT_TYPE);
     if (!content_header) {
@@ -130,7 +130,7 @@ size_t get_boundary(char *content_type, const char *field) {
     boundary = boundary + get_cnt_space(boundary) + 1;
     boundary += get_cnt_space(boundary);
 
-    char res[255] = {'-', '-'};
+    char res[BUF_LEN] = {'-', '-'};
     size_t boundary_cnt = 0;
     char *cur = boundary;
     size_t cnt = 0;

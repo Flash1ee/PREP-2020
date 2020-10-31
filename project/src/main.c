@@ -30,12 +30,11 @@ int main(int argc, const char **argv) {
     if (ptr_to_data == MAP_FAILED) {
         return -1;
     }
-    
     char *tmp = ptr_to_data;
 
     letter_t *letter = parse_header(tmp);
     if (!letter) {
-        puts("ERROR PARSE");
+        puts("E-mail parse error...");
     }
 
     letter_print(letter);

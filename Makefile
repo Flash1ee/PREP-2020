@@ -4,11 +4,18 @@ TST_TARGET = tests.out
 # XXX: Don't forget backslash at the end of any line except the last one
 # Main
 HDRS = \
-	   project/include
+	   project/include \
+	   project/tests/include
+	   
+
 
 SRCS = \
 	   project/src/main.c \
-	   project/src/matrix.c
+	   project/src/matrix.c \
+	   project/tests/src/utils.c \
+	   project/src/units.c
+
+
 
 # Test
 TST_HDRS = \
@@ -27,7 +34,7 @@ main: $(SRCS)
 	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(HDRS)) -o $(TARGET) $(CFLAGS) $(SRCS) -lm
 
 test: $(TST_SRCS)
-	$(CC) -Wall -Wextra -Werror $(addprefix -I,$(TST_HDRS)) -o $(TST_TARGET) $(CFLAGS) $(TST_SRCS) -lm
+	$(CC) -Wall -Wextra -Werror -g $(addprefix -I,$(TST_HDRS)) -o $(TST_TARGET) $(CFLAGS) $(TST_SRCS) -lm
 
 clean:
 	rm -f $(TARGET) $(TST_TARGET)

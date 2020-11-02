@@ -1,9 +1,19 @@
-#define UTILS_H
-#ifndef UTILS_H
+#ifndef PROJECT_INCLUDE_UTILS_H_
+#define PROJECT_INCLUDE_UTILS_H_
 
-#define filename "transaction.dat";
+#include <stdlib.h>
 
-// This comment is very useful
-printf("This message is very useful too")
+#define TRUE 1
+#define CLIENT 1
+#define TRANSACTION 2
+#define BLACKRECORD 3
+#define EXIT 4
 
-#endif //UTILS_H
+#define CLIENT_ARGS 8
+#define TRANSACTION_ARGS 2
+
+#define READ_ERR -3
+#define ARG_ERR -2
+#define OPEN_ERR -3
+
+#endif  //  PROJECT_INCLUDE_UTILS_H_

@@ -1,3 +1,9 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "parce.h"
 
 char *search_field(const char *str, const char *field) {

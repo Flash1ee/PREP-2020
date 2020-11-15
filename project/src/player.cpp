@@ -123,7 +123,6 @@ int Player::action() {
     }
     int rc = set_move(user_act, possible_acts);
     if (rc == false) {
-        // throw "error motions";
         return EXIT;
     }
     size_t type = get_pos(pos_x, pos_y);

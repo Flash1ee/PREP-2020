@@ -1,0 +1,11 @@
+#ifndef PROJECT_INCLUDE_RETCODES_H_
+#define PROJECT_INCLUDE_RETCODES_H_
+
+enum Errors {
+    ARG_ERR = 1,
+    IO_FILE_ERR,
+    EXIT
+};
+
+
+#endif  // PROJECT_INCLUDE_RETCODES_H_

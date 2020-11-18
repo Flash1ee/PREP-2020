@@ -1,4 +1,6 @@
+#include <fstream>
 #include "map.h"
+
 
 Map ::Map() : rows(0), cols(0) {
 }
@@ -24,7 +26,7 @@ Map ::Map(std ::istream& f) {
         } else if (!line.compare("dog")) {
             field[rows - r_tmp - 1][c_tmp] = DOG;
         } else {
-            throw "valide enemy not found.";
+            field[rows - r_tmp - 1][c_tmp] = get_clothes(line);
         }
     }
     if (!f.eof()) {
@@ -35,23 +37,29 @@ Map ::Map(std ::istream& f) {
 size_t Map::get_pos(size_t x, size_t y) {
     return this->field[this->rows - y - 1][x];
 }
-
-void Map ::print() {
-    std::cout << "rows = " << this->rows << std::endl;
-    std::cout << "cols = " << this->cols << std::endl;
-
-    for (size_t i = 0; i < this->rows; i++) {
-        for (size_t j = 0; j < this->cols; j++) {
-            std::cout << this->field[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
 size_t Map ::get_rows() {
     return this->rows;
 }
 size_t Map ::get_cols() {
     return this->cols;
+}
+int get_clothes(std::string str) {
+    if (!str.compare("armor")) {
+        return ARMOR;
+    }
+    if (!str.compare("helmet")) {
+        return HELMET;
+    }
+    if (!str.compare("shield")) {
+        return SHIELD;
+    }
+    if (!str.compare("pants")) {
+        return PANTS;
+    }
+    if (!str.compare("T-Shirt")) {
+        return T_SHIRT;
+    }
+    return -1;
 }
 void Map::set_pos(size_t x, size_t y, int type) {
     this->field[this->rows - y - 1][x] = type;

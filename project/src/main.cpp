@@ -1,5 +1,6 @@
 #include <cstring>
 #include <iostream>
+#include <fstream>
 
 #include "map.h"
 #include "player.h"
@@ -8,15 +9,20 @@
 #define map "--map"
 
 int main(int argc, const char** argv) {
-    try {
-        if (argc != 3 || strcmp(map, argv[1])) {
-            throw ARG_ERR;
-        }
-    } catch (Errors) {
-        return ARG_ERR;
+    if (!argc) {
+        throw ARG_ERR;
     }
-
-    std::ifstream f(argv[2]);
+    const char *f_name;
+    for (int i = 0; i < argc; i++) {
+        if (!strcmp(argv[i], map)) {
+            f_name = argv[i + 1];
+            break;
+        }
+    }
+    if (!f_name) {
+        throw ARG_ERR;
+    }
+    std::ifstream f(f_name);
     try {
         if (!f.is_open()) {
             throw IO_FILE_ERR;
@@ -26,16 +32,12 @@ int main(int argc, const char** argv) {
         return IO_FILE_ERR;
     }
     Map field(f);
+    f.close();
+
     Player player(field);
     int rc = player.action();
     while (rc != PLAYER_DIE && rc != EXIT) {
-        try {
-            rc = player.action();
-        } catch (const char*) {
-            std::cout << "ERROR" << std::endl;
-            break;
-        }
+        rc = player.action();
     }
-    f.close();
-    return 0;
+    return EXIT_SUCCESS;
 }

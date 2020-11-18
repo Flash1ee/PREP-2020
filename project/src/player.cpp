@@ -186,7 +186,8 @@ std::stringstream Player ::form_msg(actions &acts, bool &battle) {
             msg << std::endl;
         }
     }
-    msg << "" << this->pos_x << " x " << this->pos_y << ", hp: " << this->hp << ", armor: " << this->arm << " > ";
+    msg << "" << this->pos_x << " x " << this->pos_y << ", hp: " << this->hp;
+    msg << ", armor: " << this->arm << " > ";
     return msg;
 }
 int Player::set_arm(std::string str) {
@@ -297,10 +298,11 @@ int Player::action() {
         }
     }
     size_t type = get_pos(pos_x, pos_y);
+    bool tmp;
     if (is_enemy(type)) {
         print_mob(type);
     } else if (rc == MOVE) {
-        if (type == T_SHIRT || type == HELMET || type == PANTS || type == ARMOR || type == SHIELD) {
+        if (!is_clothes(type, tmp).empty()) {
             print_found(type);
         } else {
             std ::cout << "\nmoved\n";

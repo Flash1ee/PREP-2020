@@ -1,11 +1,11 @@
-#include <sstream>
+#include "player.h"
+
 #include <iostream>
 #include <map>
+#include <sstream>
 #include <string>
 
 #include "retcodes.h"
-#include "player.h"
-
 
 std::map<Clothes, std::vector<size_t>> arm_weight = {
     {T_SHIRT, {1, 1}},
@@ -290,8 +290,7 @@ int Player::action() {
     int rc = set_move(user_act, possible_acts);
     if (rc) {
         set_pos(x_bef, y_bef, EMPTY);
-    }
-    if (!rc) {
+    } else {
         rc = set_arm(user_act);
         if (rc) {
             return EXIT;
@@ -301,16 +300,19 @@ int Player::action() {
     bool tmp;
     if (is_enemy(type)) {
         print_mob(type);
-    } else if (rc == MOVE) {
+        return MOVE_SUCCESS;
+    }
+
+    if (rc == MOVE) {
         if (!is_clothes(type, tmp).empty()) {
             print_found(type);
         } else {
             std ::cout << "\nmoved\n";
         }
-    } else {
-        print_clothes(user_act);
+        return MOVE_SUCCESS;
     }
-    message.clear();
+
+    print_clothes(user_act);
     return MOVE_SUCCESS;
 }
 void Player::move_down() {

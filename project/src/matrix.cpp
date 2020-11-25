@@ -63,7 +63,6 @@ bool Matrix::operator==(const Matrix& rhs) const {
     if (this->m_rows != rhs.m_rows || this->m_cols != rhs.m_cols) {
         return false;
     }
-    // auto eps = std::numeric_limits<double>::epsilon() * 1e-07;
     auto eps = 1e-07;
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < this->m_cols; j++) {
@@ -178,13 +177,13 @@ double Matrix::det() const {
 void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row) {
     size_t dst_rows, dst_cols;
     dst_rows = dst_cols = 0;
-    for (size_t i = 0; i < src.m_rows; i++) {
+    for (size_t i = 0; i < src.getRows(); i++) {
         if (i == cur_row) {
             continue;
         }
         dst_cols = 0;
 
-        for (size_t j = 0; j < src.m_cols; j++) {
+        for (size_t j = 0; j < src.getCols(); j++) {
             if (j != cur_col) {
                 tmp(dst_rows, dst_cols) = src(i, j);
                 dst_cols++;
@@ -231,9 +230,9 @@ Matrix Matrix::inv() const {
         return invert;
     }
 
-    Matrix adjective = this->adj();
+    Matrix adjective = adj();
 
-    double determinate = this->det();
+    double determinate = det();
     if (!determinate) {
         throw SingularMatrix();
     }

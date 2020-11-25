@@ -39,8 +39,6 @@ class Matrix {
     friend Matrix operator*(double val, const Matrix& matrix);
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
 
-    friend void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row);
-
     Matrix transp() const;
     double det() const;
     Matrix adj() const;
@@ -49,4 +47,6 @@ class Matrix {
 
 Matrix operator*(double val, const Matrix& matrix);
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row);
+
 }  // namespace prep

@@ -39,23 +39,23 @@ size_t Matrix::getCols() const {
     return m_cols;
 }
 double& Matrix::get(size_t i, size_t j) {
+    if (i >= m_rows || j >= m_cols) {
+        throw OutOfRange(i, j, *this);
+    }
     return m_data[i][j];
 }
 double Matrix::get(size_t i, size_t j) const {
+    if (i >= m_rows || j >= m_cols) {
+        throw OutOfRange(i, j, *this);
+    }
     return m_data[i][j];
 }
 
 double Matrix::operator()(size_t i, size_t j) const {
-    if (i >= m_rows || j >= m_cols) {
-        throw OutOfRange(i, j, *this);
-    }
-    return m_data[i][j];
+    return this->get(i, j);
 }
 double& Matrix::operator()(size_t i, size_t j) {
-    if (i >= m_rows || j >= m_cols) {
-        throw OutOfRange(i, j, *this);
-    }
-    return m_data[i][j];
+    return this->get(i, j);
 }
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     auto formatter = std::numeric_limits<double>::max_digits10;
@@ -164,6 +164,24 @@ Matrix operator*(double val, const Matrix& matrix) {
     }
     return res;
 }
+static void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row) {
+    size_t dst_rows, dst_cols;
+    dst_rows = dst_cols = 0;
+    for (size_t i = 0; i < src.getRows(); i++) {
+        if (i == cur_row) {
+            continue;
+        }
+        dst_cols = 0;
+
+        for (size_t j = 0; j < src.getCols(); j++) {
+            if (j != cur_col) {
+                tmp(dst_rows, dst_cols) = src(i, j);
+                dst_cols++;
+            }
+        }
+        dst_rows++;
+    }
+}
 double Matrix::det() const {
     double determinate = 0;
     if (m_cols < 1 || m_rows < 1 || m_cols != m_rows) {
@@ -184,24 +202,7 @@ double Matrix::det() const {
     }
     return determinate;
 }
-void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row) {
-    size_t dst_rows, dst_cols;
-    dst_rows = dst_cols = 0;
-    for (size_t i = 0; i < src.getRows(); i++) {
-        if (i == cur_row) {
-            continue;
-        }
-        dst_cols = 0;
 
-        for (size_t j = 0; j < src.getCols(); j++) {
-            if (j != cur_col) {
-                tmp(dst_rows, dst_cols) = src(i, j);
-                dst_cols++;
-            }
-        }
-        dst_rows++;
-    }
-}
 Matrix Matrix::adj() const {
     if (m_rows != m_cols || m_rows < 1) {
         throw DimensionMismatch(*this);
@@ -241,9 +242,9 @@ Matrix Matrix::inv() const {
     }
 
     Matrix adjective = adj();
-
+    auto eps = 1e-7;
     double determinate = det();
-    if (!determinate) {
+    if (std::fabs(determinate) <= eps) {
         throw SingularMatrix();
     }
 

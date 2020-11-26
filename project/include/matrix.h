@@ -49,6 +49,5 @@ class Matrix {
 
 Matrix operator*(double val, const Matrix& matrix);
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
-void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row);
 
 }  // namespace prep

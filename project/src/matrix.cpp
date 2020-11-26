@@ -1,40 +1,50 @@
 #include "matrix.h"
 
 #include <iostream>
+#include <iterator>
 
 #include "exceptions.h"
 
 namespace prep {
-Matrix ::Matrix(size_t rows, size_t cols)
+Matrix::Matrix(size_t rows, size_t cols)
     : m_rows(rows), m_cols(cols) {
+
     m_data.resize(m_rows);
-    for (size_t i = 0; i < rows; i++) {
-        m_data[i].resize(m_cols);
+
+    for (auto& row : m_data) {
+        row.resize(m_cols);
     }
 }
-Matrix ::Matrix(std ::istream& is) {
+Matrix::Matrix(std::istream& is) {
     is >> m_rows >> m_cols;
     if (!is) {
         throw InvalidMatrixStream();
     }
     m_data.resize(m_rows);
-    for (size_t i = 0; i < m_rows; i++) {
-        m_data[i].resize(m_cols);
 
-        for (size_t j = 0; j < m_cols; j++) {
-            is >> (*this)(i, j);
+    for (auto& row : m_data) {
+        row.resize(m_cols);        
+        for (auto& el : row) {
+            is >> el;
             if (!is) {
                 throw InvalidMatrixStream();
             }
         }
     }
 }
-size_t Matrix ::getRows() const {
+size_t Matrix::getRows() const {
     return m_rows;
 }
-size_t Matrix ::getCols() const {
+size_t Matrix::getCols() const {
     return m_cols;
 }
+double& Matrix::get(size_t i, size_t j) {
+    return m_data[i][j];
+}
+double Matrix::get(size_t i, size_t j) const {
+    return m_data[i][j];
+}
+
 double Matrix::operator()(size_t i, size_t j) const {
     if (i >= m_rows || j >= m_cols) {
         throw OutOfRange(i, j, *this);
@@ -53,7 +63,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
 
     for (size_t i = 0; i < matrix.m_rows; i++) {
         for (size_t j = 0; j < matrix.m_cols; j++) {
-            os << std::setprecision(formatter) << matrix.m_data[i][j] << " ";
+            os << std::setprecision(formatter) << matrix(i, j) << " ";
         }
         os << std::endl;
     }
@@ -66,14 +76,14 @@ bool Matrix::operator==(const Matrix& rhs) const {
     auto eps = 1e-07;
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < this->m_cols; j++) {
-            if (std::fabs(rhs(i, j) - (*this)(i, j)) > eps) {
+            if (std::fabs(rhs(i, j) - this->get(i, j)) > eps) {
                 return false;
             }
         }
     }
     return true;
 }
-bool Matrix ::operator!=(const Matrix& rhs) const {
+bool Matrix::operator!=(const Matrix& rhs) const {
     return !(*this == rhs);
 }
 Matrix Matrix::operator+(const Matrix& rhs) const {
@@ -86,7 +96,7 @@ Matrix Matrix::operator+(const Matrix& rhs) const {
     Matrix res(this->m_rows, this->m_cols);
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < this->m_cols; j++) {
-            res(i, j) = (*this)(i, j) + rhs(i, j);
+            res(i, j) = this->get(i, j) + rhs(i, j);
         }
     }
     return res;
@@ -101,7 +111,7 @@ Matrix Matrix::operator-(const Matrix& rhs) const {
     Matrix res(this->m_rows, this->m_cols);
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < this->m_cols; j++) {
-            res(i, j) = (*this)(i, j) - rhs(i, j);
+            res(i, j) = this->get(i, j) - rhs(i, j);
         }
     }
     return res;
@@ -118,7 +128,7 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < rhs.m_cols; j++) {
             for (size_t k = 0; k < this->m_cols; k++) {
-                res(i, j) += (*this)(i, k) * rhs(k, j);
+                res(i, j) += this->get(i, k) * rhs(k, j);
             }
         }
     }
@@ -129,7 +139,7 @@ Matrix Matrix::transp() const {
 
     for (size_t i = 0; i < res.m_rows; i++) {
         for (size_t j = 0; j < res.m_cols; j++) {
-            res(i, j) = (*this)(j, i);
+            res(i, j) = this->get(j, i);
         }
     }
 
@@ -140,7 +150,7 @@ Matrix Matrix::operator*(double val) const {
 
     for (size_t i = 0; i < this->m_rows; i++) {
         for (size_t j = 0; j < this->m_cols; j++) {
-            res(i, j) = (*this)(i, j) * val;
+            res(i, j) = this->get(i, j) * val;
         }
     }
     return res;
@@ -160,17 +170,17 @@ double Matrix::det() const {
         throw DimensionMismatch(*this);
     }
     if (m_rows == 1) {
-        return (*this)(0, 0);
+        return this->get(0, 0);
     }
     if (m_rows == 2) {
-        return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(0, 1);
+        return this->get(0, 0) * this->get(1, 1) - this->get(1, 0) * this->get(0, 1);
     }
     for (size_t el = 0; el < m_cols; el++) {
         Matrix tmp(m_rows - 1, m_cols - 1);
 
         get_minor(*this, tmp, el, 0);
 
-        determinate += (pow(-1, el) * (*this)(0, el) * tmp.det());
+        determinate += (pow(-1, el) * this->get(0, el) * tmp.det());
     }
     return determinate;
 }
@@ -200,7 +210,7 @@ Matrix Matrix::adj() const {
 
     Matrix adjective(m_rows, m_cols);
     if (m_rows == 1) {
-        adjective(0, 0) = (*this)(0, 0);
+        adjective(0, 0) = this->get(0, 0);
         return adjective;
     }
     for (size_t i = 0; i < m_rows; i++) {
@@ -222,10 +232,10 @@ Matrix Matrix::inv() const {
     }
     if (m_rows == 1) {
         Matrix invert(1, 1);
-        if (!(*this)(0, 0)) {
+        if (!this->get(0, 0)) {
             throw SingularMatrix();
         }
-        invert(0, 0) = 1 / (*this)(0, 0);
+        invert(0, 0) = 1 / this->get(0, 0);
 
         return invert;
     }

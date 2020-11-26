@@ -13,6 +13,8 @@ class Matrix {
     size_t m_rows;
     size_t m_cols;
     std::vector<std::vector<double> > m_data;
+    double& get(size_t i, size_t j);
+    double get(size_t i, size_t j) const;
 
  public:
     explicit Matrix(size_t rows = 0, size_t cols = 0);

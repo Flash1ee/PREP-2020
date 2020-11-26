@@ -23,7 +23,7 @@ Matrix::Matrix(std::istream& is) {
     m_data.resize(m_rows);
 
     for (auto& row : m_data) {
-        row.resize(m_cols);        
+        row.resize(m_cols);
         for (auto& el : row) {
             is >> el;
             if (!is) {

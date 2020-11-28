@@ -7,9 +7,7 @@
 
 namespace prep {
 Matrix::Matrix(size_t rows, size_t cols)
-    : m_rows(rows), m_cols(cols) {
-
-    m_data.resize(m_rows);
+    : m_rows(rows), m_cols(cols), m_data(rows) {
 
     for (auto& row : m_data) {
         row.resize(m_cols);
@@ -61,8 +59,8 @@ std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     auto formatter = std::numeric_limits<double>::max_digits10;
     os << matrix.m_rows << " " << matrix.m_cols << std::endl;
 
-    for (size_t i = 0; i < matrix.m_rows; i++) {
-        for (size_t j = 0; j < matrix.m_cols; j++) {
+    for (size_t i = 0; i < matrix.m_rows; ++i) {
+        for (size_t j = 0; j < matrix.m_cols; ++j) {
             os << std::setprecision(formatter) << matrix(i, j) << " ";
         }
         os << std::endl;
@@ -74,8 +72,8 @@ bool Matrix::operator==(const Matrix& rhs) const {
         return false;
     }
     auto eps = 1e-07;
-    for (size_t i = 0; i < this->m_rows; i++) {
-        for (size_t j = 0; j < this->m_cols; j++) {
+    for (size_t i = 0; i < this->m_rows; ++i) {
+        for (size_t j = 0; j < this->m_cols; ++j) {
             if (std::fabs(rhs(i, j) - this->get(i, j)) > eps) {
                 return false;
             }
@@ -94,8 +92,8 @@ Matrix Matrix::operator+(const Matrix& rhs) const {
         throw DimensionMismatch(rhs);
     }
     Matrix res(this->m_rows, this->m_cols);
-    for (size_t i = 0; i < this->m_rows; i++) {
-        for (size_t j = 0; j < this->m_cols; j++) {
+    for (size_t i = 0; i < this->m_rows; ++i) {
+        for (size_t j = 0; j < this->m_cols; ++j) {
             res(i, j) = this->get(i, j) + rhs(i, j);
         }
     }
@@ -109,8 +107,8 @@ Matrix Matrix::operator-(const Matrix& rhs) const {
         throw DimensionMismatch(rhs);
     }
     Matrix res(this->m_rows, this->m_cols);
-    for (size_t i = 0; i < this->m_rows; i++) {
-        for (size_t j = 0; j < this->m_cols; j++) {
+    for (size_t i = 0; i < this->m_rows; ++i) {
+        for (size_t j = 0; j < this->m_cols; ++j) {
             res(i, j) = this->get(i, j) - rhs(i, j);
         }
     }
@@ -125,9 +123,9 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
     }
     Matrix res(this->m_rows, rhs.m_cols);
 
-    for (size_t i = 0; i < this->m_rows; i++) {
-        for (size_t j = 0; j < rhs.m_cols; j++) {
-            for (size_t k = 0; k < this->m_cols; k++) {
+    for (size_t i = 0; i < this->m_rows; ++i) {
+        for (size_t j = 0; j < rhs.m_cols; ++j) {
+            for (size_t k = 0; k < this->m_cols; ++k) {
                 res(i, j) += this->get(i, k) * rhs(k, j);
             }
         }
@@ -137,8 +135,8 @@ Matrix Matrix::operator*(const Matrix& rhs) const {
 Matrix Matrix::transp() const {
     Matrix res(this->m_cols, this->m_rows);
 
-    for (size_t i = 0; i < res.m_rows; i++) {
-        for (size_t j = 0; j < res.m_cols; j++) {
+    for (size_t i = 0; i < res.m_rows; ++i) {
+        for (size_t j = 0; j < res.m_cols; ++j) {
             res(i, j) = this->get(j, i);
         }
     }
@@ -148,8 +146,8 @@ Matrix Matrix::transp() const {
 Matrix Matrix::operator*(double val) const {
     Matrix res(this->m_rows, this->m_cols);
 
-    for (size_t i = 0; i < this->m_rows; i++) {
-        for (size_t j = 0; j < this->m_cols; j++) {
+    for (size_t i = 0; i < this->m_rows; ++i) {
+        for (size_t j = 0; j < this->m_cols; ++j) {
             res(i, j) = this->get(i, j) * val;
         }
     }
@@ -157,8 +155,8 @@ Matrix Matrix::operator*(double val) const {
 }
 Matrix operator*(double val, const Matrix& matrix) {
     Matrix res(matrix.m_rows, matrix.m_cols);
-    for (size_t i = 0; i < matrix.m_rows; i++) {
-        for (size_t j = 0; j < matrix.m_cols; j++) {
+    for (size_t i = 0; i < matrix.m_rows; ++i) {
+        for (size_t j = 0; j < matrix.m_cols; ++j) {
             res(i, j) = val * matrix(i, j);
         }
     }
@@ -167,13 +165,13 @@ Matrix operator*(double val, const Matrix& matrix) {
 static void get_minor(const Matrix& src, Matrix& tmp, size_t cur_col, size_t cur_row) {
     size_t dst_rows, dst_cols;
     dst_rows = dst_cols = 0;
-    for (size_t i = 0; i < src.getRows(); i++) {
+    for (size_t i = 0; i < src.getRows(); ++i) {
         if (i == cur_row) {
             continue;
         }
         dst_cols = 0;
 
-        for (size_t j = 0; j < src.getCols(); j++) {
+        for (size_t j = 0; j < src.getCols(); ++j) {
             if (j != cur_col) {
                 tmp(dst_rows, dst_cols) = src(i, j);
                 dst_cols++;
@@ -193,7 +191,7 @@ double Matrix::det() const {
     if (m_rows == 2) {
         return this->get(0, 0) * this->get(1, 1) - this->get(1, 0) * this->get(0, 1);
     }
-    for (size_t el = 0; el < m_cols; el++) {
+    for (size_t el = 0; el < m_cols; ++el) {
         Matrix tmp(m_rows - 1, m_cols - 1);
 
         get_minor(*this, tmp, el, 0);
@@ -214,8 +212,8 @@ Matrix Matrix::adj() const {
         adjective(0, 0) = this->get(0, 0);
         return adjective;
     }
-    for (size_t i = 0; i < m_rows; i++) {
-        for (size_t j = 0; j < m_cols; j++) {
+    for (size_t i = 0; i < m_rows; ++i) {
+        for (size_t j = 0; j < m_cols; ++j) {
             Matrix tmp(m_rows - 1, m_cols - 1);
 
             get_minor(transponse, tmp, j, i);

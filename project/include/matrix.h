@@ -10,9 +10,9 @@
 namespace prep {
 class Matrix {
  private:
-    size_t m_rows;
-    size_t m_cols;
-    std::vector<std::vector<double> > m_data;
+    size_t m_rows{};
+    size_t m_cols{};
+    std::vector<std::vector<double>> m_data{};
     double& get(size_t i, size_t j);
     double get(size_t i, size_t j) const;
 

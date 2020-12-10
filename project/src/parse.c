@@ -4,7 +4,16 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include "parce.h"
+#include "parse.h"
+
+#define FROM "From"
+#define TO "To"
+#define DATE "Date"
+
+#define CONT_TYPE "Content-Type"
+#define CONT "Content"
+#define MULTIPART "multipart/"
+#define BOUNDARY "boundary"
 
 char *search_field(const char *str, const char *field) {
     char data_field[255];
@@ -19,21 +28,21 @@ char *search_field(const char *str, const char *field) {
         return res;
     }
     while (*(res - 1) != '\n') {
-        char *tmp = res;
-        tmp++;
+        char *tmp = res + 1;
         res = strcasestr(tmp, data_field);
     }
-    res = res + get_cnt_space(res) + strlen(field) + 1;
-    return res;
+
+    return res + get_cnt_space(res) + strlen(field) + 1;
 }
+
 size_t get_cnt_space(char *beg) {
-    char *tmp = beg;
     size_t k = 0;
-    while (isspace(*tmp++)) {
+    while (isspace(*beg++)) {
         k++;
     }
     return k;
 }
+
 int parse_str(char *str, char *field, char **dst) {
     char *data = search_field(str, field);
 
@@ -67,6 +76,7 @@ int parse_str(char *str, char *field, char **dst) {
                 }
             }
             size_t len = strlen(*dst);
+
             for (size_t i = 0; i < len; i++) {
                 if (*(*dst + i + 1) == FLAG) {
                     while (*(*dst + i + 1) == FLAG) {
@@ -81,6 +91,7 @@ int parse_str(char *str, char *field, char **dst) {
         }
     }
 }
+
 letter_t *parse_header(char *str) {
     letter_t *letter = calloc(sizeof(letter_t), 1);
     if (!letter) {
@@ -101,12 +112,14 @@ letter_t *parse_header(char *str) {
     get_content_type(str, &(letter->count_part));
     return letter;
 }
+
 void free_letter(letter_t *src) {
     free(src->date);
     free(src->recipient);
     free(src->sender);
     free(src);
 }
+
 int get_content_type(char *str, size_t *value) {
     char content_type[BUF_LEN];
 
@@ -126,6 +139,7 @@ int get_content_type(char *str, size_t *value) {
 
     return EXIT_SUCCESS;
 }
+
 size_t get_boundary(char *content_type, const char *field) {
     char *boundary = strcasestr(content_type, field);
     if (!boundary || isalpha(*(boundary - 1))) {

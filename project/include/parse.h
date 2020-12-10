@@ -1,5 +1,7 @@
-#ifndef PROJECT_INCLUDE_PARCE_H_
-#define PROJECT_INCLUDE_PARCE_H_
+#ifndef PROJECT_INCLUDE_PARSE_H_
+#define PROJECT_INCLUDE_PARSE_H_
+
+#include <stdlib.h>
 
 #define END_OF_HEADER -2
 #define NO -3
@@ -8,15 +10,6 @@
 
 #define FLAG 27
 #define BUF_LEN 255
-
-#define FROM "From"
-#define TO "To"
-#define DATE "Date"
-
-#define CONT_TYPE "Content-Type"
-#define CONT "Content"
-#define MULTIPART "multipart/"
-#define BOUNDARY "boundary"
 
 
 typedef struct {
@@ -38,4 +31,4 @@ size_t get_boundary(char *content_type, const char *field);
 size_t get_cnt_space(char *beg);
 
 
-#endif  // PROJECT_INCLUDE_PARCE_H_
+#endif  // PROJECT_INCLUDE_PARSE_H_

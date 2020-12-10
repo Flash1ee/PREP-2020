@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "parce.h"
+#include "parse.h"
 
 
 int main(int argc, const char **argv) {
@@ -30,9 +30,8 @@ int main(int argc, const char **argv) {
     if (ptr_to_data == MAP_FAILED) {
         return -1;
     }
-    char *tmp = ptr_to_data;
 
-    letter_t *letter = parse_header(tmp);
+    letter_t *letter = parse_header(ptr_to_data);
     if (!letter) {
         puts("E-mail parse error...");
     }

@@ -1,11 +1,7 @@
 #pragma once
 
-#include <cmath>
-#include <iomanip>
-#include <istream>
-#include <limits>
-#include <ostream>
 #include <vector>
+#include <ostream>
 
 namespace prep {
 class Matrix {

@@ -1,11 +1,11 @@
-#include "player.h"
-
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 
 #include "retcodes.h"
+#include "player.h"
+#include "map.h"
 
 std::map<Clothes, std::vector<size_t>> arm_weight = {
     {T_SHIRT, {1, 1}},

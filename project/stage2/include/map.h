@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_MAP_H_
-#define PROJECT_INCLUDE_MAP_H_
+#ifndef PROJECT_STAGE2_INCLUDE_MAP_H_
+#define PROJECT_STAGE2_INCLUDE_MAP_H_
 
 #include <vector>
 #include <string>
@@ -43,4 +43,4 @@ class Map {
 };
 
 
-#endif  // PROJECT_INCLUDE_MAP_H_
+#endif  // PROJECT_STAGE2_INCLUDE_MAP_H_

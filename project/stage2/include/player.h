@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_PLAYER_H_
-#define PROJECT_INCLUDE_PLAYER_H_
+#ifndef PROJECT_STAGE2_INCLUDE_PLAYER_H_
+#define PROJECT_STAGE2_INCLUDE_PLAYER_H_
 
 #include <string>
 
@@ -78,4 +78,4 @@ class Player : public Map {
     void print_pos();
 };
 
-#endif  // PROJECT_INCLUDE_PLAYER_H_
+#endif  // PROJECT_STAGE2_INCLUDE_PLAYER_H_

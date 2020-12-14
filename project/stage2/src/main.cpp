@@ -14,6 +14,7 @@ int main(int argc, const char** argv) {
     }
     const char *f_name;
     for (int i = 0; i < argc; i++) {
+        // printf("%s\n", argv[i]);
         if (!strcmp(argv[i], map)) {
             f_name = argv[i + 1];
             break;

@@ -12,11 +12,8 @@
 namespace prep {
 
 Matrix::Matrix(size_t rows, size_t cols)
-    : m_rows(rows), m_cols(cols), m_data(rows) {
-
-    for (auto& row : m_data) {
-        row.resize(m_cols);
-    }
+    : m_rows(rows), m_cols(cols),
+      m_data(rows, std::vector<double> (cols)) {
 }
 
 Matrix::Matrix(std::istream& is) {
@@ -50,10 +47,18 @@ size_t Matrix::getCols() const {
 }
 
 double Matrix::operator()(size_t i, size_t j) const {
+    if (i >= m_rows || j >= m_cols) {
+        throw OutOfRange(i, j, *this);
+    }
+
     return m_data[i][j];
 }
 
 double& Matrix::operator()(size_t i, size_t j) {
+    if (i >= m_rows || j >= m_cols) {
+        throw OutOfRange(i, j, *this);
+    }
+
     return m_data[i][j];
 }
 

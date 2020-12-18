@@ -54,13 +54,9 @@ class Player : public Map {
       clothes.resize(5);
     }
     explicit Player(Map &map, bool stage)
-    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), m_stage(false) {
+    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0), m_stage(false) {
       if (stage) {
         m_stage = true;
-        arm = 0;
-        arm_wgt = 0;
-        change_pos = 0;
-        clothes.resize(5);
       }
     }
     int action();

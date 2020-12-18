@@ -2,42 +2,40 @@
 #include <iostream>
 #include <fstream>
 
-#include "map.h"
-#include "player.h"
+#include "stages.h"
 #include "retcodes.h"
 
 #define map "--map"
+#define stage_1 "stage1"
+#define stage_2 "stage2"
+
 
 int main(int argc, const char** argv) {
     if (!argc) {
         throw ARG_ERR;
     }
-    const char *f_name;
+
+    std::string f_name;
     for (int i = 0; i < argc; i++) {
         if (!strcmp(argv[i], map)) {
             f_name = argv[i + 1];
             break;
         }
     }
-    if (!f_name) {
+
+    if (f_name.empty()) {
         throw ARG_ERR;
     }
-    std::ifstream f(f_name);
-    try {
-        if (!f.is_open()) {
-            throw IO_FILE_ERR;
-        }
-    } catch (int) {
-        f.close();
-        return IO_FILE_ERR;
-    }
-    Map field(f);
-    f.close();
 
-    Player player(field);
-    int rc = player.action();
-    while (rc != PLAYER_DIE && rc != EXIT) {
-        rc = player.action();
+    bool stage = false;  //  false - stage 1 true - stage2
+
+    if (f_name.find(stage_1) != std::string::npos) {
+        return game(f_name, stage);
     }
-    return EXIT_SUCCESS;
+    if (f_name.find(stage_2) != std::string::npos) {
+        stage = true;
+        return game(f_name, stage);
+    }
+
+    return EXIT_FAILURE;
 }

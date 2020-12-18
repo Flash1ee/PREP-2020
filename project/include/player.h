@@ -1,5 +1,5 @@
-#ifndef PROJECT_INCLUDE_PLAYER_H_
-#define PROJECT_INCLUDE_PLAYER_H_
+#pragma once
+
 
 #include <string>
 
@@ -42,6 +42,8 @@ class Player : public Map {
 
     bool change_pos;
 
+    bool m_stage;
+
     std::vector <bool> clothes;
     std::stringstream form_msg(actions &acts, bool &battle);
     std::string gear_message(size_t map_type);
@@ -51,9 +53,15 @@ class Player : public Map {
     : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0), arm_wgt(0), change_pos(0) {
       clothes.resize(5);
     }
-    explicit Player(Map &map)
-    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0), arm_wgt(0), change_pos(0) {
-      clothes.resize(5);
+    explicit Player(Map &map, bool stage)
+    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), m_stage(false) {
+      if (stage) {
+        m_stage = true;
+        arm = 0;
+        arm_wgt = 0;
+        change_pos = 0;
+        clothes.resize(5);
+      }
     }
     int action();
 
@@ -78,4 +86,3 @@ class Player : public Map {
     void print_pos();
 };
 
-#endif  // PROJECT_INCLUDE_PLAYER_H_

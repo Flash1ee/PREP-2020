@@ -1,5 +1,4 @@
-#ifndef PROJECT_INCLUDE_RETCODES_H_
-#define PROJECT_INCLUDE_RETCODES_H_
+#pragma once
 
 enum Errors {
     ARG_ERR = 1,
@@ -8,5 +7,3 @@ enum Errors {
     EXIT
 };
 
-
-#endif  // PROJECT_INCLUDE_RETCODES_H_

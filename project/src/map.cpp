@@ -1,12 +1,6 @@
 #include <fstream>
 #include "map.h"
 
-
-Map ::Map() : rows(0), cols(0) {
-}
-Map ::Map(Map& map)
-    : rows(map.rows), cols(map.cols), field(map.field) {
-}
 Map ::Map(std ::istream& f) {
     f >> this->cols >> this->rows;
     if (!this->rows || !this->cols) {
@@ -34,15 +28,18 @@ Map ::Map(std ::istream& f) {
     }
     field[rows - 1][0] = PLAYER;
 }
+
 size_t Map::get_pos(size_t x, size_t y) {
     return this->field[this->rows - y - 1][x];
 }
+
 size_t Map ::get_rows() {
     return this->rows;
 }
 size_t Map ::get_cols() {
     return this->cols;
 }
+
 int get_clothes(std::string str) {
     if (!str.compare("armor")) {
         return ARMOR;
@@ -61,6 +58,7 @@ int get_clothes(std::string str) {
     }
     return -1;
 }
+
 void Map::set_pos(size_t x, size_t y, int type) {
     this->field[this->rows - y - 1][x] = type;
 }

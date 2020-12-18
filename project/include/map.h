@@ -1,5 +1,4 @@
-#ifndef PROJECT_INCLUDE_MAP_H_
-#define PROJECT_INCLUDE_MAP_H_
+#pragma once
 
 #include <vector>
 #include <string>
@@ -33,14 +32,12 @@ class Map {
     std::vector<std::vector<size_t> > field;
 
  public:
-    Map();
-    Map(Map&);
+    Map() : rows(0), cols(0) {}
+    Map(Map& map)
+    : rows(map.rows), cols(map.cols), field(map.field) {}
     explicit Map(std ::istream &f);
     size_t get_rows();
     size_t get_cols();
     size_t get_pos(size_t x, size_t y);
     void set_pos(size_t x, size_t y, int type);
 };
-
-
-#endif  // PROJECT_INCLUDE_MAP_H_

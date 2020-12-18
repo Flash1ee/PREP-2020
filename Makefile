@@ -6,6 +6,7 @@ HDRS = \
 
 SRCS = \
        project/src/main.cpp \
+       project/src/stages.cpp \
        project/src/map.cpp \
        project/src/enemy.cpp \
        project/src/player.cpp 

@@ -1,5 +1,4 @@
-#ifndef PROJECT_INCLUDE_ENEMY_H_
-#define PROJECT_INCLUDE_ENEMY_H_
+#pragma once
 
 #define WOLF_HP 6
 #define DOG_HP 3
@@ -28,4 +27,3 @@ class Enemy {
     size_t get_dmg();
 };
 
-#endif  // PROJECT_INCLUDE_ENEMY_H_

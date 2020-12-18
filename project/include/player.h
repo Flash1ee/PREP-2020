@@ -45,20 +45,19 @@ class Player : public Map {
     bool m_stage;
 
     std::vector <bool> clothes;
+
     std::stringstream form_msg(actions &acts, bool &battle);
     std::string gear_message(size_t map_type);
 
  public:
     Player()
-    : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0), arm_wgt(0), change_pos(0) {
-      clothes.resize(5);
-    }
+    : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG),
+      arm(0), arm_wgt(0), change_pos(0), clothes(5) {}
+
     explicit Player(Map &map, bool stage)
-    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0), m_stage(false) {
-      if (stage) {
-        m_stage = true;
-      }
-    }
+    : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG),
+      arm(0), arm_wgt(0), change_pos(0), m_stage(stage), clothes(5) {}
+
     int action();
 
     size_t get_hp();

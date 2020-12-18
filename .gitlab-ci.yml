@@ -1,9 +1,7 @@
 image: gcc
 
 variables:
-  BIN_NAME_ONE: stage1.out
-  BIN_NAME_TWO: stage2.out
-
+  BIN_NAME: main.out
 
 stages:
   - test_style
@@ -24,34 +22,32 @@ build:
     - make
   artifacts:
     paths:
-      - ${BIN_NAME_ONE}
-      - ${BIN_NAME_TWO}
-
+      - ${BIN_NAME}
 
 
 test_stage1:
   stage: test_stage1
   script:
-    - ./btests/run.sh ./${BIN_NAME_ONE} --tests-path btests/testcases/stage1
+    - ./btests/run.sh ./${BIN_NAME} --tests-path btests/testcases/stage1
   when: manual
 
 test_stage1_mem:
   stage: test_stage1
   script:
     - apt-get update && apt-get install -y valgrind
-    - ./btests/run.sh ./${BIN_NAME_ONE} --memcheck --tests-path btests/testcases/stage1
+    - ./btests/run.sh ./${BIN_NAME} --memcheck --tests-path btests/testcases/stage1
   when: manual
 
 test_stage2:
   stage: test_stage2
   script:
-    - ./btests/run.sh ./${BIN_NAME_TWO} --tests-path btests/testcases/stage2
+    - ./btests/run.sh ./${BIN_NAME} --tests-path btests/testcases/stage2
   when: manual
 
 test_stage2_mem:
   stage: test_stage2
   script:
     - apt-get update && apt-get install -y valgrind
-    - ./btests/run.sh ./${BIN_NAME_TWO} --memcheck --tests-path btests/testcases/stage2
+    - ./btests/run.sh ./${BIN_NAME} --memcheck --tests-path btests/testcases/stage2
   when: manual
 

@@ -5,8 +5,12 @@ TARGET_SEC  = stage2.out
 HDRS_FRST = \
 	   project/stage1/include/
 
-HDRS_SEC = \
-	   project/stage2/include/
+SRCS = \
+       project/src/main.cpp \
+       project/src/stages.cpp \
+       project/src/map.cpp \
+       project/src/enemy.cpp \
+       project/src/player.cpp 
 
 SRCS_FRST = \
        project/stage1/src/main.cpp \

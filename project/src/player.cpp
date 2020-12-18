@@ -346,9 +346,9 @@ int Player::action() {
     size_t y_bef = pos_y;
     int rc = set_move(user_act, possible_acts);
 
-    if (rc) {
+    if (rc && m_stage) {
         set_pos(x_bef, y_bef, EMPTY);
-    } else {
+    } else if (m_stage) {
         rc = set_arm(user_act);
         if (rc) {
             return EXIT;

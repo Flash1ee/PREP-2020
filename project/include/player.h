@@ -50,10 +50,6 @@ class Player : public Map {
     std::string gear_message(size_t map_type);
 
  public:
-    Player()
-    : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG),
-      arm(0), arm_wgt(0), change_pos(0), clothes(5) {}
-
     explicit Player(Map &map, bool stage)
     : Map(map), pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG),
       arm(0), arm_wgt(0), change_pos(0), m_stage(stage), clothes(5) {}

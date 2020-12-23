@@ -19,11 +19,13 @@ class Enemy {
     size_t dmg;
 
  public:
-    Enemy() : hp(0), dmg(0) {
+    Enemy() : hp(0), dmg(BASE_DMG) {
     }
     void damage(size_t power);
     explicit Enemy(size_t type);
     size_t get_hp();
+    void set_hp(size_t hp);
+    void set_dmg(size_t dmg);
     size_t get_dmg();
 };
 

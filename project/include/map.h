@@ -16,9 +16,10 @@ enum Entities {
     DOG,
     RAT,
     PLAYER_DIE,
+    COUNT,
 };
 enum Clothes {
-    T_SHIRT = 5,
+    T_SHIRT = COUNT,
     ARMOR,
     HELMET,
     PANTS,

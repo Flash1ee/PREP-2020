@@ -3,16 +3,16 @@
 Enemy::Enemy(size_t type) {
     switch (type) {
         case WOLF:
-            this->hp = WOLF_HP;
-            this->dmg = WOLF_DMG + BASE_DMG;
+            set_hp(WOLF_HP);
+            set_dmg(WOLF_DMG + BASE_DMG);
             break;
         case RAT:
-            this->hp = RAT_HP;
-            this->dmg = RAT_DMG + BASE_DMG;
+            set_hp(RAT_HP);
+            set_dmg(RAT_DMG + BASE_DMG);
             break;
         case DOG:
-            this->hp = DOG_HP;
-            this->dmg = DOG_DMG + BASE_DMG;
+            set_hp(DOG_HP);
+            set_dmg(DOG_DMG + BASE_DMG);
             break;
     }
 }
@@ -29,3 +29,10 @@ size_t Enemy::get_hp() {
 size_t Enemy::get_dmg() {
     return this->dmg;
 }
+void Enemy::set_dmg(size_t dmg) {
+    this->dmg = dmg;
+}
+void Enemy::set_hp(size_t hp) {
+    this->hp = hp;
+}
+

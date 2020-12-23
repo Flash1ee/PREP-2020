@@ -1,5 +1,14 @@
 #include <fstream>
+#include <map>
 #include "map.h"
+
+std::map<std::string, int> clothes = {
+    {"armor", ARMOR},
+    {"helmet", HELMET},
+    {"shield", SHIELD},
+    {"pants", PANTS},
+    {"T-Shirt", T_SHIRT},
+};
 
 Map ::Map(std ::istream& f) {
     f >> this->cols >> this->rows;
@@ -41,22 +50,11 @@ size_t Map ::get_cols() {
 }
 
 int get_clothes(std::string str) {
-    if (!str.compare("armor")) {
-        return ARMOR;
+    if (clothes.find(str) == clothes.end()) {
+        return -1;
     }
-    if (!str.compare("helmet")) {
-        return HELMET;
-    }
-    if (!str.compare("shield")) {
-        return SHIELD;
-    }
-    if (!str.compare("pants")) {
-        return PANTS;
-    }
-    if (!str.compare("T-Shirt")) {
-        return T_SHIRT;
-    }
-    return -1;
+    
+    return clothes[str];
 }
 
 void Map::set_pos(size_t x, size_t y, int type) {

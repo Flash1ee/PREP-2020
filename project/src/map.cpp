@@ -49,11 +49,12 @@ size_t Map ::get_cols() {
     return this->cols;
 }
 
+
 int get_clothes(std::string str) {
     if (clothes.find(str) == clothes.end()) {
         return -1;
     }
-    
+
     return clothes[str];
 }
 

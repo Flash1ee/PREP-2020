@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include "player.h"
 
 #define WOLF_HP 6
 #define DOG_HP 3
@@ -9,18 +11,13 @@
 #define RAT_DMG 3
 #define BASE_DMG 1
 
-#include <iostream>
-
-#include "player.h"
-
 class Enemy {
  private:
     size_t hp;
     size_t dmg;
 
  public:
-    Enemy() : hp(0), dmg(BASE_DMG) {
-    }
+    Enemy() : hp(0), dmg(BASE_DMG) { }
     void damage(size_t power);
     explicit Enemy(size_t type);
     size_t get_hp();
@@ -28,4 +25,3 @@ class Enemy {
     void set_dmg(size_t dmg);
     size_t get_dmg();
 };
-

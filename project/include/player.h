@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-
 #include "enemy.h"
 #include "map.h"
+
 
 #define MOVE_SUCCESS 1
 #define PLAYER_HP 100
@@ -26,12 +26,14 @@ struct suit {
 class Player;
 
 bool is_enemy(Entities character);
+std::stringstream is_clothes(size_t &val);
+int is_battle(Player *player, Map *map, std::string user_act, actions acts);
+
 void print_found(size_t clothes);
 void print_mob(size_t type);
 bool print_clothes(std ::string user_act);
-std::stringstream is_clothes(size_t &val);
-int is_battle(Player *player, Map *map, std::string user_act, actions acts);
 std::stringstream form_msg(Player *p, actions &acts, bool &battle, Map *map);
+bool fill_move(Player *p, size_t &cols, size_t &rows, actions &acts, std::stringstream &msg);
 
 class Player {
  private:
@@ -50,8 +52,9 @@ class Player {
 
  public:
     explicit Player(bool stage)
-    : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG),
-      arm(0), arm_wgt(0), change_pos(0), m_stage(stage), clothes(5) { }
+    : pos_x(0), pos_y(0), hp(PLAYER_HP), dmg(BASE_DMG), arm(0),
+      arm_wgt(0), change_pos(0), m_stage(stage), clothes(5) { }
+
     int action(Map *map);
 
     size_t get_hp();
@@ -80,4 +83,3 @@ class Player {
 
     void print_pos(Map *map);
 };
-

@@ -6,4 +6,3 @@ enum Errors {
     FULL,
     EXIT
 };
-

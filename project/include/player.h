@@ -27,7 +27,7 @@ bool is_enemy(size_t &character);
 void print_found(size_t clothes);
 void print_mob(size_t type);
 bool print_clothes(std ::string user_act);
-std::string is_clothes(size_t &val, bool &flag);
+std::string is_clothes(size_t &val);
 
 
 class Player : public Map {

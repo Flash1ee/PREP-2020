@@ -81,7 +81,7 @@ std::string Player ::gear_message(size_t map_type) {
     return out;
 }
 
-std::string is_clothes(size_t &val, bool &flag) {
+std::string is_clothes(size_t &val) {
     std::string out;
 
     if (val == T_SHIRT) {
@@ -99,8 +99,6 @@ std::string is_clothes(size_t &val, bool &flag) {
     } else if (val == SHIELD) {
         out += "\nshield found\n";
     }
-
-    flag = !(out.empty());
 
     return out;
 }
@@ -156,11 +154,10 @@ void print_mob(size_t type) {
 }
 
 bool check_clothes(size_t pos) {
-    for (size_t i = T_SHIRT; i < SHIELD; i++) {
-        if (i == pos) {
-            return true;
-        }
+    if (pos >= T_SHIRT && pos < SHIELD) {
+        return true;
     }
+
     return false;
 }
 
@@ -174,7 +171,7 @@ std::stringstream Player ::form_msg(actions &acts, bool &battle) {
     bool gear = false;
 
     if (m_stage) {
-        is_clothes(map_type, gear);
+        gear = !is_clothes(map_type).empty();
     }
 
     msg << "Supported actions:\n";
@@ -272,21 +269,17 @@ bool print_clothes(std ::string user_act) {
         std ::cout << "\nclothes worn\n";
 
         return true;
-    } else if (user_act.find("throw") != std::string::npos) {
+    }
+    if (user_act.find("throw") != std::string::npos) {
         std::string clothes;
 
         clothes.assign(user_act, user_act.find(' ') + 1);
         std::cout << "\nthe " << clothes << " is thrown out\n";
 
         return true;
-    } else {
-        return false;
     }
-}
 
-void print_found(size_t clothes) {
-    bool tmp;
-    std::cout << is_clothes(clothes, tmp);
+    return false;
 }
 
 int Player::action() {
@@ -356,7 +349,6 @@ int Player::action() {
     }
 
     size_t type = get_pos(pos_x, pos_y);
-    bool tmp;
 
     if (is_enemy(type)) {
         print_mob(type);
@@ -365,8 +357,8 @@ int Player::action() {
     }
 
     if (rc == MOVE) {
-        if (!is_clothes(type, tmp).empty()) {
-            print_found(type);
+        if (!is_clothes(type).empty()) {
+            std::cout << is_clothes(type);
         } else {
             std ::cout << "\nmoved\n";
         }

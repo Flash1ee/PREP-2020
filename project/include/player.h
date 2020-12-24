@@ -25,7 +25,7 @@ struct suit {
 
 class Player;
 
-bool is_enemy(size_t &character);
+bool is_enemy(Entities character);
 void print_found(size_t clothes);
 void print_mob(size_t type);
 bool print_clothes(std ::string user_act);

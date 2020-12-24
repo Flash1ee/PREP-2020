@@ -103,19 +103,9 @@ std::string is_clothes(size_t &val) {
     return out;
 }
 
-bool is_enemy(size_t &character) {
-    if (character == EMPTY || character == PLAYER) {
-        return false;
-    }
-    for (size_t i = ARMOR; i <= T_SHIRT; i++) {
-        if (i == character) {
-            return false;
-        }
-    }
-    for (size_t i = WOLF; i <= RAT; i++) {
-        if (i == character) {
-            return true;
-        }
+bool is_enemy(Entities character) {
+    if (character >= WOLF &&  character <= RAT) {
+        return true;
     }
 
     return false;
@@ -177,7 +167,7 @@ std::stringstream form_msg(Player *p, actions &acts, bool &battle, Map *map) {
     size_t rows = map->get_rows();
 
     size_t map_type = map->get_pos(p->get_pos_x(), p->get_pos_y());
-    battle = is_enemy(map_type);
+    battle = is_enemy(static_cast<Entities>(map_type));
     bool gear = false;
 
     if (p->get_stage()) {
@@ -321,7 +311,7 @@ int Player::action(Map *map) {
 
     size_t type = map->get_pos(pos_x, pos_y);
 
-    if (is_enemy(type)) {
+    if (is_enemy(static_cast<Entities>(type))) {
         print_mob(type);
 
         return MOVE_SUCCESS;

@@ -29,7 +29,7 @@ bool is_enemy(Entities character);
 void print_found(size_t clothes);
 void print_mob(size_t type);
 bool print_clothes(std ::string user_act);
-std::string is_clothes(size_t &val);
+std::stringstream is_clothes(size_t &val);
 int is_battle(Player *player, Map *map, std::string user_act, actions acts);
 std::stringstream form_msg(Player *p, actions &acts, bool &battle, Map *map);
 
@@ -76,7 +76,7 @@ class Player {
     void move_down();
 
     bool check_clothes(size_t pos);
-    std::string gear_message(size_t map_type);
+    std::stringstream gear_message(size_t map_type);
 
     void print_pos(Map *map);
 };

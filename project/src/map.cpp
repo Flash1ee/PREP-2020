@@ -1,5 +1,20 @@
 #include <fstream>
+#include <map>
 #include "map.h"
+
+static std::map<std::string, int> clothes = {
+    {"armor", ARMOR},
+    {"helmet", HELMET},
+    {"shield", SHIELD},
+    {"pants", PANTS},
+    {"T-Shirt", T_SHIRT},
+};
+
+static std::map<int, std::string> enemy = {
+    {WOLF, "wolf"},
+    {RAT, "rat"},
+    {DOG, "dog"},
+};
 
 Map ::Map(std ::istream& f) {
     f >> this->cols >> this->rows;
@@ -13,11 +28,11 @@ Map ::Map(std ::istream& f) {
     std::string line;
     size_t r_tmp, c_tmp;
     while (f >> c_tmp >> r_tmp >> line) {
-        if (!line.compare("wolf")) {
+        if (!line.compare(enemy[WOLF])) {
             field[rows - r_tmp - 1][c_tmp] = WOLF;
-        } else if (!line.compare("rat")) {
+        } else if (!line.compare(enemy[RAT])) {
             field[rows - r_tmp - 1][c_tmp] = RAT;
-        } else if (!line.compare("dog")) {
+        } else if (!line.compare(enemy[DOG])) {
             field[rows - r_tmp - 1][c_tmp] = DOG;
         } else {
             field[rows - r_tmp - 1][c_tmp] = get_clothes(line);
@@ -40,23 +55,13 @@ size_t Map ::get_cols() {
     return this->cols;
 }
 
+
 int get_clothes(std::string str) {
-    if (!str.compare("armor")) {
-        return ARMOR;
+    if (clothes.find(str) == clothes.end()) {
+        return -1;
     }
-    if (!str.compare("helmet")) {
-        return HELMET;
-    }
-    if (!str.compare("shield")) {
-        return SHIELD;
-    }
-    if (!str.compare("pants")) {
-        return PANTS;
-    }
-    if (!str.compare("T-Shirt")) {
-        return T_SHIRT;
-    }
-    return -1;
+
+    return clothes[str];
 }
 
 void Map::set_pos(size_t x, size_t y, int type) {

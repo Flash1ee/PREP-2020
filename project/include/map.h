@@ -16,15 +16,15 @@ enum Entities {
     DOG,
     RAT,
     PLAYER_DIE,
+    COUNT,
 };
 enum Clothes {
-    T_SHIRT = 5,
+    T_SHIRT = COUNT,
     ARMOR,
     HELMET,
     PANTS,
     SHIELD,
 };
-int get_clothes(std::string str);
 class Map {
  private:
     size_t rows;
@@ -36,8 +36,12 @@ class Map {
     Map(Map& map)
     : rows(map.rows), cols(map.cols), field(map.field) {}
     explicit Map(std ::istream &f);
+
     size_t get_rows();
     size_t get_cols();
     size_t get_pos(size_t x, size_t y);
+
     void set_pos(size_t x, size_t y, int type);
 };
+
+int get_clothes(std::string str);

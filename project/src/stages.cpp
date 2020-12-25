@@ -9,23 +9,19 @@
 int game(std::string f_name, bool stage) {
     std::ifstream f(f_name);
 
-    try {
-        if (!f.is_open()) {
-            throw IO_FILE_ERR;
-        }
-    } catch (int) {
+    if (!f.is_open()) {
         f.close();
-        return IO_FILE_ERR;
+        throw IO_FILE_ERR;
     }
 
     Map field(f);
     f.close();
 
-    Player player(field, stage);
+    Player player(stage);
 
-    int rc = player.action();
+    int rc = player.action(&field);
     while (rc != PLAYER_DIE && rc != EXIT) {
-        rc = player.action();
+        rc = player.action(&field);
     }
 
     return EXIT_SUCCESS;

@@ -8,7 +8,7 @@
 
 #define CLOTHES 5
 
-std::map<Clothes, std::vector<size_t>> arm_weight = {
+static std::map<Clothes, std::vector<size_t>> arm_weight = {
     {T_SHIRT, {1, 1}},
     {ARMOR, {3, 3}},
     {HELMET, {3, 2}},
@@ -16,7 +16,7 @@ std::map<Clothes, std::vector<size_t>> arm_weight = {
     {PANTS, {1, 1}},
 };
 
-std::map<std::string, int> picks = {
+static std::map<std::string, int> picks = {
     {"pick T-Shirt", T_SHIRT},
     {"pick armor", ARMOR},
     {"pick helmet", HELMET},
@@ -24,7 +24,7 @@ std::map<std::string, int> picks = {
     {"pick shield", SHIELD},
 };
 
-std::map<std::string, int> throws = {
+static std::map<std::string, int> throws = {
     {"throw T-Shirt", T_SHIRT},
     {"throw armor", ARMOR},
     {"throw helmet", HELMET},
@@ -32,103 +32,73 @@ std::map<std::string, int> throws = {
     {"throw shield", SHIELD},
 };
 
-std::string Player ::gear_message(size_t map_type) {
-    std::string out;
-    std::string picked;
+static std::map<int, std::string> throws_rev = {
+    {T_SHIRT, "throw T-Shirt" },
+    {ARMOR, "throw armor"},
+    {HELMET, "throw helmet"},
+    {PANTS, "throw pants"},
+    {SHIELD, "throw shield"},
+};
+static std::map<int, std::string> found_map = {
+    {T_SHIRT, "T-Shirt found"},
+    {ARMOR, "armor found"},
+    {HELMET, "helmet found"},
+    {PANTS, "pants found"},
+    {SHIELD, "shield found"},
+};
+static std::map<int, std::string> clothes_map = {
+    {T_SHIRT, "T-Shirt"},
+    {ARMOR, "armor"},
+    {HELMET, "helmet"},
+    {PANTS, "pants"},
+    {SHIELD, "shield"},
+};
+static std::map<int, std::tuple<std::string, int>> enemys = {
+    {WOLF, {"wolf", WOLF_HP}},
+    {RAT, {"rat", RAT_HP}},
+    {DOG, {"dog", DOG_HP}},
+};
+
+
+std::stringstream Player ::gear_message(size_t map_type) {
+    std::stringstream out;
 
     if (!clothes[map_type - CLOTHES]) {
-        out += " * pick ";
-
-        switch (map_type) {
-            case T_SHIRT:
-                out += "T-Shirt\n";
-                break;
-            case ARMOR:
-                out += "armor\n";
-                break;
-            case HELMET:
-                out += "helmet\n";
-                break;
-            case PANTS:
-                out += "pants\n";
-                break;
-            case SHIELD:
-                out += "shield\n";
-                break;
-        }
+        out << " * pick ";
+        out << clothes_map[map_type] << std::endl;
     }
     for (size_t i = T_SHIRT; i <= SHIELD; i++) {
         if (clothes[i - CLOTHES] && !change_pos) {
-            switch (i) {
-                case T_SHIRT:
-                    out += " * throw T-Shirt\n";
-                    break;
-                case ARMOR:
-                    out += " * throw armor\n";
-                    break;
-                case HELMET:
-                    out += " * throw helmet\n";
-                    break;
-                case PANTS:
-                    out += " * throw pants\n";
-                    break;
-                case SHIELD:
-                    out += " * throw shield\n";
-                    break;
-            }
+            out << " * " << throws_rev[i] << std::endl;
         }
     }
     return out;
 }
 
-std::string is_clothes(size_t &val, bool &flag) {
-    std::string out;
+std::stringstream is_clothes(size_t &val) {
+    std::stringstream out;
 
-    if (val == T_SHIRT) {
-        out += "\nT-Shirt found\n";
-
-    } else if (val == ARMOR) {
-        out += "\narmor found\n";
-
-    } else if (val == HELMET) {
-        out += "\nhelmet found\n";
-
-    } else if (val == PANTS) {
-        out += "\npants found\n";
-
-    } else if (val == SHIELD) {
-        out += "\nshield found\n";
+    if (val >= T_SHIRT && val <= SHIELD) {
+        out << std::endl << found_map[val] << std::endl;
     }
-
-    flag = !(out.empty());
 
     return out;
 }
 
-bool is_enemy(size_t &character) {
-    if (character == EMPTY || character == PLAYER) {
-        return false;
-    }
-    for (size_t i = ARMOR; i <= T_SHIRT; i++) {
-        if (i == character) {
-            return false;
-        }
-    }
-    for (size_t i = WOLF; i <= RAT; i++) {
-        if (i == character) {
-            return true;
-        }
+bool is_enemy(Entities character) {
+    if (character >= WOLF &&  character <= RAT) {
+        return true;
     }
 
     return false;
 }
-int Player::set_move(std::string str, actions data) {
+int Player::set_move(std::string str, actions data, Map *map) {
     if (!data.left.empty() && !str.compare(data.left)) {
         move_left();
         return MOVE;
     }
     if (!data.right.empty() && !str.compare(data.right)) {
-        move_right();
+        move_right(map);
         return MOVE;
     }
     if (!data.down.empty() && !str.compare(data.down)) {
@@ -136,7 +106,7 @@ int Player::set_move(std::string str, actions data) {
         return MOVE;
     }
     if (!data.up.empty() && !str.compare(data.up)) {
-        move_up();
+        move_up(map);
         return MOVE;
     }
 
@@ -144,37 +114,39 @@ int Player::set_move(std::string str, actions data) {
 }
 
 void print_mob(size_t type) {
-    if (type == WOLF) {
-        std::cout << "\nwolf found, 6 hp\n";
-
-    } else if (type == DOG) {
-        std::cout << "\ndog found, 3 hp\n";
-
-    } else if (type == RAT) {
-        std::cout << "\nrat found, 2 hp\n";
-    }
+    std::cout << std::endl << std::get<0>(enemys[type])<< " found, ";
+    std::cout << std::get<1>(enemys[type])<< " hp" << std::endl;
 }
 
 bool check_clothes(size_t pos) {
-    for (size_t i = T_SHIRT; i < SHIELD; i++) {
-        if (i == pos) {
-            return true;
-        }
+    if (pos >= T_SHIRT && pos < SHIELD) {
+        return true;
     }
+
     return false;
 }
+bool Player::get_stage() {
+    return this->m_stage;
+}
+size_t Player::get_arm() {
+    return this->arm;
+}
+void Player::set_pos(bool pos) {
+    this->change_pos = pos;
+}
 
-std::stringstream Player ::form_msg(actions &acts, bool &battle) {
+
+std::stringstream form_msg(Player *p, actions &acts, bool &battle, Map *map) {
     std::stringstream msg;
-    size_t cols = this->get_cols();
-    size_t rows = this->get_rows();
+    size_t cols = map->get_cols();
+    size_t rows = map->get_rows();
 
-    size_t map_type = Map::get_pos(this->pos_x, this->pos_y);
-    battle = is_enemy(map_type);
+    size_t map_type = map->get_pos(p->get_pos_x(), p->get_pos_y());
+    battle = is_enemy(static_cast<Entities>(map_type));
     bool gear = false;
 
-    if (m_stage) {
-        is_clothes(map_type, gear);
+    if (p->get_stage()) {
+        gear = !is_clothes(map_type).str().empty();
     }
 
     msg << "Supported actions:\n";
@@ -183,42 +155,21 @@ std::stringstream Player ::form_msg(actions &acts, bool &battle) {
     if (battle) {
         msg << " * kick enemy\n";
     } else {
-        if (this->pos_x) {
-            acts.left = "move left";
-            msg << " * move left\n";
+        val = fill_move(p, cols, rows, acts, msg);
 
-            val = true;
-        }
-        if (this->pos_x != cols - 1) {
-            acts.right = "move right";
-            msg << " * move right\n";
-
-            val = true;
-        }
-        if (this->pos_y) {
-            acts.down = "move down";
-            msg << " * move down\n";
-
-            val = true;
-        }
-        if (this->pos_y != rows - 1) {
-            acts.up = "move up";
-            msg << " * move up\n";
-
-            val = true;
-        }
         if (gear) {
-            msg << gear_message(map_type);
-            change_pos = EMPTY;
+            msg << p->gear_message(map_type).str();
+            p->set_pos(EMPTY);
         }
         if (!val) {
             msg << std::endl;
         }
     }
-    msg << "" << this->pos_x << " x " << this->pos_y << ", hp: " << this->hp;
+    msg << "" << p->get_pos_x() << " x " << p->get_pos_y();
+    msg << ", hp: " << p->get_hp();
 
-    if (m_stage) {
-        msg << ", armor: " << this->arm;
+    if (p->get_stage()) {
+        msg << ", armor: " << p->get_arm();
     }
 
     msg << " > ";
@@ -226,45 +177,73 @@ std::stringstream Player ::form_msg(actions &acts, bool &battle) {
     return msg;
 }
 
-int Player::set_arm(std::string str) {
-    int pos_type = get_pos(this->pos_x, this->pos_y);
+bool fill_move(Player *p, size_t &cols, size_t &rows, actions &acts, std::stringstream &msg) {
+    bool rc = false;
+    if (p->get_pos_x()) {
+        acts.left = "move left";
+        msg << " * move left\n";
+
+        rc = true;
+    }
+    if (p->get_pos_x() != cols - 1) {
+        acts.right = "move right";
+        msg << " * move right\n";
+
+        rc = true;
+    }
+    if (p->get_pos_y()) {
+        acts.down = "move down";
+        msg << " * move down\n";
+
+        rc = true;
+    }
+    if (p->get_pos_y() != rows - 1) {
+        acts.up = "move up";
+        msg << " * move up\n";
+
+        rc = true;
+    }
+    return rc;
+}
+
+int Player::set_arm(std::string str, Map *map) {
+    int pos_type = map->get_pos(this->pos_x, this->pos_y);
 
     auto tmp = picks.find(str);
 
     if (tmp != picks.end()) {
         if (tmp->second == pos_type) {
-            clothes[tmp->second - 5] = true;
+            clothes[tmp->second - CLOTHES] = true;
 
             add_arm(static_cast<Clothes>(pos_type));
             change_pos = pos_type;
-        }
-    } else {
-        tmp = throws.find(str);
 
-        if (tmp != throws.end()) {
-            clothes[tmp->second - 5] = false;
-
-            dec_arm(static_cast<Clothes>(tmp->second));
-        } else {
-            return ARG_ERR;
+            return EXIT_SUCCESS;
         }
     }
+    tmp = throws.find(str);
 
-    return EXIT_SUCCESS;
+    if (tmp != throws.end()) {
+        clothes[tmp->second - CLOTHES] = false;
+        dec_arm(static_cast<Clothes>(tmp->second));
+
+        return EXIT_SUCCESS;
+    }
+    return ARG_ERR;
 }
 
 void Player::dec_arm(Clothes thing) {
     arm_wgt -= arm_weight[thing][1];
     arm -= arm_weight[thing][0];
 
-    clothes[thing - 5] = false;
+    clothes[thing - CLOTHES] = false;
 }
 
 void Player::add_arm(Clothes thing) {
     arm_wgt += arm_weight[thing][1];
     arm += arm_weight[thing][0];
 
-    clothes[thing - 5] = true;
+    clothes[thing - CLOTHES] = true;
 }
 
 bool print_clothes(std ::string user_act) {
@@ -272,101 +251,57 @@ bool print_clothes(std ::string user_act) {
         std ::cout << "\nclothes worn\n";
 
         return true;
-    } else if (user_act.find("throw") != std::string::npos) {
+    }
+    if (user_act.find("throw") != std::string::npos) {
         std::string clothes;
 
         clothes.assign(user_act, user_act.find(' ') + 1);
         std::cout << "\nthe " << clothes << " is thrown out\n";
 
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 }
 
-void print_found(size_t clothes) {
-    bool tmp;
-    std::cout << is_clothes(clothes, tmp);
-}
-
-int Player::action() {
+int Player::action(Map *map) {
     std::string user_act;
     actions possible_acts;
     bool battle = false;
 
-    std::stringstream message;
-    message = form_msg(possible_acts, battle);
-
-    std ::cout << message.str();
+    std ::cout << form_msg(this, possible_acts, battle, map).str();
 
     if (!getline(std::cin, user_act)) {
         return EXIT;
     }
     if (battle) {
-        if (!user_act.compare("kick enemy")) {
-            size_t type_enemy = Map::get_pos(this->pos_x, this->pos_y);
-            Enemy opponent(type_enemy);
-
-            while (true) {
-                opponent.damage(this->get_dmg());
-                if (opponent.get_hp()) {
-                    this->damage(opponent.get_dmg());
-                }
-                if (!this->get_hp() || !opponent.get_hp()) {
-                    break;
-                }
-                std ::cout << "\nenemy kicked. Enemy hp: " << opponent.get_hp() << std::endl;
-
-                message = form_msg(possible_acts, battle);
-                std ::cout << message.str();
-                message.clear();
-
-                if (!getline(std::cin, user_act)) {
-                    return EXIT;
-                }
-                if (user_act.compare("kick enemy")) {
-                    return -1;
-                }
-            }
-            if (!this->get_hp()) {
-                std::cout << "\nplayer died\n";
-                return PLAYER_DIE;
-            }
-            set_pos(this->pos_x, this->pos_y, EMPTY);
-
-            std ::cout << "\nenemy killed" << std::endl;
-
-            return MOVE_SUCCESS;
-
-        } else {
-            return EXIT;
-        }
+        return is_battle(this, map, user_act, possible_acts);
     }
     size_t x_bef = pos_x;
     size_t y_bef = pos_y;
-    int rc = set_move(user_act, possible_acts);
+    int rc = set_move(user_act, possible_acts, map);
 
     if (rc && m_stage) {
-        set_pos(x_bef, y_bef, EMPTY);
+        map->set_pos(x_bef, y_bef, EMPTY);
     } else if (m_stage) {
-        rc = set_arm(user_act);
+        rc = set_arm(user_act, map);
+
         if (rc) {
             return EXIT;
         }
     }
 
-    size_t type = get_pos(pos_x, pos_y);
-    bool tmp;
+    size_t type = map->get_pos(pos_x, pos_y);
 
-    if (is_enemy(type)) {
+    if (is_enemy(static_cast<Entities>(type))) {
         print_mob(type);
 
         return MOVE_SUCCESS;
     }
 
     if (rc == MOVE) {
-        if (!is_clothes(type, tmp).empty()) {
-            print_found(type);
+        if (!is_clothes(type).str().empty()) {
+            std::cout << is_clothes(type).str();
         } else {
             std ::cout << "\nmoved\n";
         }
@@ -380,20 +315,72 @@ int Player::action() {
 
     return MOVE_SUCCESS;
 }
+int is_battle(Player *player, Map *map, std::string user_act, actions acts) {
+    std::stringstream message;
+    if (!user_act.compare("kick enemy")) {
+        size_t type_enemy = map->get_pos(player->get_pos_x(), player->get_pos_y());
+        Enemy opponent(type_enemy);
+
+        while (true) {
+            opponent.damage(player->get_dmg());
+            if (opponent.get_hp()) {
+                player->damage(opponent.get_dmg());
+            }
+            if (!player->get_hp() || !opponent.get_hp()) {
+                break;
+            }
+            std ::cout << "\nenemy kicked. Enemy hp: " << opponent.get_hp() << std::endl;
+            bool tmp = true;
+
+            message = form_msg(player, acts, tmp, map);
+            std ::cout << message.str();
+            message.clear();
+
+            if (!getline(std::cin, user_act)) {
+                return EXIT;
+            }
+            if (user_act.compare("kick enemy")) {
+                return -1;
+            }
+        }
+        if (!player->get_hp()) {
+            std::cout << "\nplayer died\n";
+            return PLAYER_DIE;
+        }
+        map->set_pos(player->get_pos_x(), player->get_pos_y(), EMPTY);
+
+        std ::cout << "\nenemy killed" << std::endl;
+
+        return MOVE_SUCCESS;
+    }
+    return EXIT;
+}
 
 void Player::move_down() {
+    if (!this->pos_y) {
+        throw std::logic_error("going out of the map");
+    }
     this->pos_y--;
 }
 
-void Player::move_up() {
+void Player::move_up(Map *map) {
+    if (this->pos_y > map->get_rows()) {
+        throw std::logic_error("going out of the map");
+    }
     this->pos_y++;
 }
 
-void Player::move_right() {
+void Player::move_right(Map *map) {
+    if (this->pos_x > map->get_cols()) {
+        throw std::logic_error("going out of the map");
+    }
     this->pos_x++;
 }
 
 void Player::move_left() {
+    if (!this->pos_x) {
+        throw std::logic_error("going out of the map");
+    }
     this->pos_x--;
 }
 
@@ -418,6 +405,14 @@ size_t Player::get_dmg() {
     return this->dmg;
 }
 
-void Player::print_pos() {
-    std::cout << "x: " << Map::get_rows() - pos_x << " y: " << pos_y << std::endl;
+void Player::print_pos(Map *map) {
+    std::cout << "x: " << map->get_rows() - pos_x << " y: " << pos_y << std::endl;
+}
+
+size_t Player::get_pos_x() {
+    return this->pos_x;
+}
+
+size_t Player::get_pos_y() {
+    return this->pos_y;
 }
